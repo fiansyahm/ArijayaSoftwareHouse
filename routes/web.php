@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AdminController;
+use App\Models\Project;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/wpadmin', [AdminController::class, 'wpadmin']);
@@ -38,3 +39,26 @@ Route::get('/session/register', [SessionController::class, 'register']);
 Route::post('/session/register', [SessionController::class, 'createUser']);
 
 Route::Resource('projects', ProjectController::class);
+Route::post('/projects/{id}/update-json', [ProjectController::class, 'updateJson']);
+Route::get('/projects/{id}/kanban', function($id) {
+    $project = Project::findOrFail($id);
+
+    // Pisahkan fitur berdasarkan status
+    $features = [
+        'to_do' => [],
+        'progress' => [],
+        'done' => [],
+    ];
+
+    foreach ($project->json as $feature) {
+        if ($feature['status'] == '0') {
+            $features['to_do'][] = $feature;
+        } elseif ($feature['status'] == '1') {
+            $features['progress'][] = $feature;
+        } else {
+            $features['done'][] = $feature;
+        }
+    }
+
+    return view('projects.kanban', compact('project', 'features'));
+});

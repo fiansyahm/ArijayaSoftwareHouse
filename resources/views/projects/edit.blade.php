@@ -36,6 +36,9 @@
             </select>
         </div>
 
+        <label for="json">Edit JSON:</label>
+        <textarea name="json" id="json" class="form-control" rows="10">{{ json_encode($project->json, JSON_PRETTY_PRINT) }}</textarea>
+
         <button type="submit" class="btn btn-success">Update</button>
         <a href="{{ route('projects.index') }}" class="btn btn-secondary">Batal</a>
     </form>

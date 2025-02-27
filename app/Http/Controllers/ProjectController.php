@@ -48,7 +48,10 @@ class ProjectController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'nullable',
+            'json' => 'required|string', // JSON dalam bentuk string
         ]);
+
+        // $request->json = json_decode($request->json, true);
 
         $project->update($request->all());
 
@@ -59,5 +62,21 @@ class ProjectController extends Controller
     {
         $project->delete();
         return redirect()->route('projects.index');
+    }
+
+    public function updateJson(Request $request, $id)
+    {
+        $project = Project::findOrFail($id);
+        
+        // Validasi data dari request
+        $request->validate([
+            'json' => 'required|array',
+        ]);
+
+        // Update kolom JSON
+        $project->json = $request->input('json');
+        $project->save();
+
+        return response()->json(['message' => 'Progress updated successfully!']);
     }
 }

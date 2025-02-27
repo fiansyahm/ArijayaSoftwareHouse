@@ -31,6 +31,7 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
                         </form>
+                        <a href="/projects/{id}/kanban" class="btn btn-warning btn-sm">Proses</a>
                     </td>
                 </tr>
             @endforeach
