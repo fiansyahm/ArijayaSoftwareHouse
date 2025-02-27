@@ -50,13 +50,15 @@
             <h3>To Do</h3>
             <div id="todo" class="droppable bg-light p-3">
                 @foreach ($projects as $project)
-                    @foreach ($project->json as $feature)
-                        @if ($feature['status'] == "0")
-                            <div class="draggable card p-2" data-project="{{ $project->id }}" data-feature="{{ $feature['id'] }}">
-                                {{ $feature['feature'] }} - Assigned to: {{ $feature['assigned_to'] ?? 'None' }}
-                            </div>
-                        @endif
-                    @endforeach
+                    @if($project->json!=null)
+                        @foreach ($project->json as $feature)
+                            @if ($feature['status'] == "0")
+                                <div class="draggable card p-2" data-project="{{ $project->id }}" data-feature="{{ $feature['id'] }}">
+                                    {{ $feature['feature'] }} - Assigned to: {{ $feature['assigned_to'] ?? 'None' }}
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
                 @endforeach
             </div>
         </div>
@@ -65,13 +67,15 @@
             <h3>In Progress</h3>
             <div id="progress" class="droppable bg-light p-3">
                 @foreach ($projects as $project)
-                    @foreach ($project->json as $feature)
-                        @if ($feature['status'] == "1")
-                            <div class="draggable card p-2 bg-danger text-white" data-project="{{ $project->id }}" data-feature="{{ $feature['id'] }}">
-                                {{ $feature['feature'] }} - Assigned to: {{ $feature['assigned_to'] ?? 'None' }}
-                            </div>
-                        @endif
-                    @endforeach
+                    @if($project->json!=null)
+                        @foreach ($project->json as $feature)
+                            @if ($feature['status'] == "1")
+                                <div class="draggable card p-2 bg-danger text-white" data-project="{{ $project->id }}" data-feature="{{ $feature['id'] }}">
+                                    {{ $feature['feature'] }} - Assigned to: {{ $feature['assigned_to'] ?? 'None' }}
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
                 @endforeach
             </div>
         </div>
@@ -80,13 +84,15 @@
             <h3>Done</h3>
             <div id="done" class="droppable bg-light p-3">
                 @foreach ($projects as $project)
-                    @foreach ($project->json as $feature)
-                        @if ($feature['status'] == "2")
-                            <div class="draggable card p-2 bg-success text-white" data-project="{{ $project->id }}" data-feature="{{ $feature['id'] }}">
-                                {{ $feature['feature'] }} - Assigned to: {{ $feature['assigned_to'] ?? 'None' }}
-                            </div>
-                        @endif
-                    @endforeach
+                    @if($project->json!=null)
+                        @foreach ($project->json as $feature)
+                            @if ($feature['status'] == "2")
+                                <div class="draggable card p-2 bg-success text-white" data-project="{{ $project->id }}" data-feature="{{ $feature['id'] }}">
+                                    {{ $feature['feature'] }} - Assigned to: {{ $feature['assigned_to'] ?? 'None' }}
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
                 @endforeach
             </div>
         </div>
