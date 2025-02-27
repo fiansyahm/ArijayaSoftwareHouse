@@ -13,3 +13,5 @@
     <a href="{{ route('projects.index') }}" class="btn btn-secondary">Kembali</a>
 </div>
  @endsection
+<!-- 
+ https://chatgpt.com/share/67bfec8e-7e44-8004-bd6b-0c638572f569 -->
