@@ -302,12 +302,12 @@
 
                   <li class="@yield('navbar_menu_resume')">
                       <a class="nav-link" href="#submenu_resume_1" data-toggle="collapse" aria-expanded="false"
-                          class="dropdown-toggle">Personal Resume</a>
+                          class="dropdown-toggle">Project</a>
                       <ul class="collapse list-unstyled" id="submenu_resume_1">
                         
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/resume/list/all">
-                                Daftar Resume
+                            <a class="nav-link" href="/projects">
+                                List Project
                             </a>
                         </li>
             

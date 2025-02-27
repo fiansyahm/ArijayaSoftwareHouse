@@ -36,3 +36,5 @@ Route::post('/session/login', [SessionController::class, 'login']);
 Route::get('/session/logout', [SessionController::class, 'logout']);
 Route::get('/session/register', [SessionController::class, 'register']);
 Route::post('/session/register', [SessionController::class, 'createUser']);
+
+Route::Resource('projects', ProjectController::class);
