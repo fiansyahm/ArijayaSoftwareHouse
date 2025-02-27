@@ -51,9 +51,15 @@ class ProjectController extends Controller
             'json' => 'required|string', // JSON dalam bentuk string
         ]);
 
-        // $request->json = json_decode($request->json, true);
-
         $project->update($request->all());
+
+         // Decode JSON dari textarea dan simpan ke database
+        $decodedJson = json_decode($request->json, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return back()->withErrors(['json' => 'Format JSON tidak valid!']);
+        }
+
+        $project->update(['json' => $decodedJson]);
 
         return redirect()->route('projects.index');
     }
@@ -79,4 +85,40 @@ class ProjectController extends Controller
 
         return response()->json(['message' => 'Progress updated successfully!']);
     }
+
+    public function assignProject(Request $request, $projectId, $featureId)
+    {
+        $project = Project::findOrFail($projectId);
+        $jsonData = $project->json;
+
+        foreach ($jsonData as &$feature) {
+            if ($feature['id'] == $featureId) {
+                $feature['assigned_to'] = $request->assigned_to;
+                break;
+            }
+        }
+
+        $project->update(['json' => $jsonData]);
+
+        return response()->json(['message' => 'Project assigned successfully!', 'json' => $jsonData]);
+    }
+
+    public function updateProgress(Request $request, $projectId, $featureId)
+    {
+        $project = Project::findOrFail($projectId);
+        $jsonData = $project->json;
+
+        foreach ($jsonData as &$feature) {
+            if ($feature['id'] == $featureId) {
+                $feature['status'] = $request->status; // 0: To Do, 1: Progress, 2: Done
+                break;
+            }
+        }
+
+        $project->update(['json' => $jsonData]);
+
+        return response()->json(['message' => 'Progress updated successfully!', 'json' => $jsonData]);
+    }
+
+
 }
