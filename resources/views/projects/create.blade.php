@@ -26,6 +26,18 @@
             <input type="date" id="end_date" name="end_date" class="form-control">
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Programmer</label>
+            <div class="border p-2 rounded">
+                @foreach($users as $user)
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="user_{{ $user->id }}" name="programmers[]" value="{{ $user->id }}">
+                        <label class="form-check-label" for="user_{{ $user->id }}">{{ $user->name }}</label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
         <button type="submit" class="btn btn-success">Simpan</button>
         <a href="{{ route('projects.index') }}" class="btn btn-secondary">Batal</a>
     </form>

@@ -50,14 +50,19 @@ Route::get('/projects/{id}/kanban', function($id) {
         'done' => [],
     ];
 
-    foreach ($project->json as $feature) {
-        if ($feature['status'] == '0') {
-            $features['to_do'][] = $feature;
-        } elseif ($feature['status'] == '1') {
-            $features['progress'][] = $feature;
-        } else {
-            $features['done'][] = $feature;
-        }
+    if($project->json == null) {
+        return view('projects.kanban', compact('project', 'features'));
+    }
+    else {
+        foreach ($project->json as $feature) {
+            if ($feature['status'] == '0') {
+                $features['to_do'][] = $feature;
+            } elseif ($feature['status'] == '1') {
+                $features['progress'][] = $feature;
+            } else {
+                $features['done'][] = $feature;
+            }
+        }   
     }
 
     return view('projects.kanban', compact('project', 'features'));

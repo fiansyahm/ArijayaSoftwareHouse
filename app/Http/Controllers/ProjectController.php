@@ -3,18 +3,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
     public function index()
-    {
+{
+    $user = Auth::user();
+
+    if ($user->isAdmin == 1) {
         $projects = Project::all();
-        return view('projects.index', compact('projects'));
+    } else {
+        $projects = Project::whereJsonContains('programmers', strval($user->id))->get();
     }
+
+    $users = User::all();
+    return view('projects.index', compact('projects', 'users'));
+}
 
     public function create()
     {
-        return view('projects.create');
+        $users = User::all();
+        return view('projects.create', compact('users'));
     }
 
     public function store(Request $request)
@@ -22,18 +33,22 @@ class ProjectController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'nullable',
+            'programmers' => 'required|array',
+            'programmers.*' => 'exists:users,id',
         ]);
 
-        Project::create([
+        $project = Project::create([
             'name' => $request->name,
             'description' => $request->description,
             'user_id' => auth()->id(),
             'start_date' => $request->start_date,
-            'end_date' => $request->end_date
+            'end_date' => $request->end_date,
+            'programmers' => json_encode($request->programmers), // Simpan sebagai JSON
         ]);
 
         return redirect()->route('projects.index');
     }
+
 
     public function show(Project $project)
     {
@@ -42,7 +57,8 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
-        return view('projects.edit', compact('project'));
+        $users = User::all();
+        return view('projects.edit', compact('project', 'users'));
     }
 
     public function update(Request $request, Project $project)

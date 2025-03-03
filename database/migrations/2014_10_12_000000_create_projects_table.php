@@ -21,6 +21,7 @@ class CreateProjectsTable extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->boolean('isDone')->default(false);
+            $table->text('programmers')->nullable(); // Menyimpan ID user dalam format JSON
             $table->timestamps();
         });
     }

@@ -39,6 +39,20 @@
         <label for="json">Edit JSON:</label>
         <textarea name="json" id="json" class="form-control" rows="10">{{ json_encode($project->json, JSON_PRETTY_PRINT) }}</textarea>
 
+        <div class="mb-3">
+            <label for="programmers" class="form-label">Programmer</label>
+            <div>
+                @php
+                    $selectedUsers = json_decode($project->programmers, true) ?? []; // Decode JSON jadi array
+                @endphp
+        
+                @foreach($users as $user)
+                    <input type="checkbox" name="programmers[]" value="{{ $user->id }}" 
+                        {{ in_array($user->id, $selectedUsers) ? 'checked' : '' }}>
+                    {{ $user->name }}<br>
+                @endforeach
+            </div>
+        </div>
         <button type="submit" class="btn btn-success">Update</button>
         <a href="{{ route('projects.index') }}" class="btn btn-secondary">Batal</a>
     </form>

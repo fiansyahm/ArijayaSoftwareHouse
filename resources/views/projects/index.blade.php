@@ -15,6 +15,7 @@
                 <th>start_date</th>
                 <th>end_date</th>
                 <th>Status</th>
+                <th>Programmers</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -27,6 +28,18 @@
                     <td>{{ $project->start_date }}</td>
                     <td>{{ $project->end_date }}</td>
                     <td>{{ $project->isDone ? 'Selesai' : 'Belum Selesai' }}</td>
+                    <td>
+                        @php
+                            $selectedUsers = json_decode($project->programmers, true) ?? [];
+                        @endphp
+                        <ul>
+                            @foreach($users as $user)
+                                @if(in_array($user->id, $selectedUsers))
+                                    <li>{{ $user->name }}</li>
+                                @endif
+                            @endforeach
+                        </ul>
+                    </td>
                     <td>
                         <a href="{{ route('projects.show', $project) }}" class="btn btn-info btn-sm">Detail</a>
                         <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning btn-sm">Edit</a>
