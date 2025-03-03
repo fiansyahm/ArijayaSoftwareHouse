@@ -26,14 +26,6 @@
             <input type="date" id="end_date" name="end_date" class="form-control">
         </div>
 
-        <div class="mb-3">
-            <label for="isDone" class="form-label">Status</label>
-            <select id="isDone" name="isDone" class="form-control">
-                <option value="0">Belum Selesai</option>
-                <option value="1">Selesai</option>
-            </select>
-        </div>
-
         <button type="submit" class="btn btn-success">Simpan</button>
         <a href="{{ route('projects.index') }}" class="btn btn-secondary">Batal</a>
     </form>

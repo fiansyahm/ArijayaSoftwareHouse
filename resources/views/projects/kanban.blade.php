@@ -76,6 +76,15 @@
             }
 
             function updateJsonData(itemId, newStatus) {
+                if(newStatus == 'todo') {
+                    newStatus = 0;
+                }
+                else if(newStatus == 'progress') {
+                    newStatus = 1;
+                }
+                else if(newStatus == 'done') {
+                    newStatus = 2;
+                }
                 let features = @json($project->json);
                 
                 for (let i = 0; i < features.length; i++) {

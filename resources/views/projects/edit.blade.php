@@ -1,5 +1,5 @@
 @extends('template-wpadmin')
-@section('title', 'Edit Proyek')
+@section('title', 'Home')
 @section('main')
 <div class="container">
     <h1>Edit Proyek</h1>
@@ -36,127 +36,14 @@
             </select>
         </div>
 
-        @php
-            $jsonData = is_string($project->json) ? json_decode($project->json, true) : ($project->json ?? []);
-        @endphp
+        <label for="json">Edit JSON:</label>
+        <textarea name="json" id="json" class="form-control" rows="10">{{ json_encode($project->json, JSON_PRETTY_PRINT) }}</textarea>
 
-        <h3>Fitur Proyek</h3>
-        <div id="features-container">
-            @foreach ($jsonData as $index => $feature)
-                <div class="card p-3 mb-3 feature-item">
-                    <h5>Fitur {{ $index + 1 }}</h5>
-
-                    <div class="mb-2">
-                        <label class="form-label">Nama Fitur</label>
-                        <input type="text" name="json[{{ $index }}][feature]" class="form-control" value="{{ $feature['feature'] }}" required>
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">Status</label>
-                        <select name="json[{{ $index }}][status]" class="form-control">
-                            <option value="0" {{ $feature['status'] == "0" ? 'selected' : '' }}>To Do</option>
-                            <option value="1" {{ $feature['status'] == "1" ? 'selected' : '' }}>In Progress</option>
-                            <option value="2" {{ $feature['status'] == "2" ? 'selected' : '' }}>Done</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">Stakeholder (PM)</label>
-                        <select name="json[{{ $index }}][stakeholder]" class="form-control">
-                            <option value="PM 1" {{ $feature['stakeholder'] == "PM 1" ? 'selected' : '' }}>PM 1</option>
-                            <option value="PM 2" {{ $feature['stakeholder'] == "PM 2" ? 'selected' : '' }}>PM 2</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">Assigned To (Programmer)</label>
-                        <select name="json[{{ $index }}][assigned_to]" class="form-control">
-                            <option value="Programmer 1" {{ $feature['assigned_to'] == "Programmer 1" ? 'selected' : '' }}>Programmer 1</option>
-                            <option value="Programmer 2" {{ $feature['assigned_to'] == "Programmer 2" ? 'selected' : '' }}>Programmer 2</option>
-                            <option value="Programmer 3" {{ $feature['assigned_to'] == "Programmer 3" ? 'selected' : '' }}>Programmer 3</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">Tanggal Mulai</label>
-                        <input type="datetime-local" name="json[{{ $index }}][start]" class="form-control" value="{{ date('Y-m-d\TH:i', strtotime($feature['start'])) }}">
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">Tanggal Selesai</label>
-                        <input type="datetime-local" name="json[{{ $index }}][end]" class="form-control" value="{{ date('Y-m-d\TH:i', strtotime($feature['end'])) }}">
-                    </div>
-
-                    <button type="button" class="btn btn-danger btn-sm remove-feature">Hapus Fitur</button>
-                </div>
-            @endforeach
-        </div>
-
-        <button type="button" id="add-feature" class="btn btn-primary">Tambah Fitur</button>
         <button type="submit" class="btn btn-success">Update</button>
         <a href="{{ route('projects.index') }}" class="btn btn-secondary">Batal</a>
     </form>
 </div>
-
-<script>
-    document.getElementById('add-feature').addEventListener('click', function () {
-        let index = document.querySelectorAll('.feature-item').length;
-        let featureHTML = `
-            <div class="card p-3 mb-3 feature-item">
-                <h5>Fitur Baru</h5>
-
-                <div class="mb-2">
-                    <label class="form-label">Nama Fitur</label>
-                    <input type="text" name="json[${index}][feature]" class="form-control" required>
-                </div>
-
-                <div class="mb-2">
-                    <label class="form-label">Status</label>
-                    <select name="json[${index}][status]" class="form-control">
-                        <option value="0">To Do</option>
-                        <option value="1">In Progress</option>
-                        <option value="2">Done</option>
-                    </select>
-                </div>
-
-                <div class="mb-2">
-                    <label class="form-label">Stakeholder (PM)</label>
-                    <select name="json[${index}][stakeholder]" class="form-control">
-                        <option value="PM 1">PM 1</option>
-                        <option value="PM 2">PM 2</option>
-                    </select>
-                </div>
-
-                <div class="mb-2">
-                    <label class="form-label">Assigned To (Programmer)</label>
-                    <select name="json[${index}][assigned_to]" class="form-control">
-                        <option value="Programmer 1">Programmer 1</option>
-                        <option value="Programmer 2">Programmer 2</option>
-                        <option value="Programmer 3">Programmer 3</option>
-                    </select>
-                </div>
-
-                <button type="button" class="btn btn-danger btn-sm remove-feature">Hapus Fitur</button>
-            </div>
-        `;
-        document.getElementById('features-container').insertAdjacentHTML('beforeend', featureHTML);
-    });
-
-    document.addEventListener('click', function (event) {
-        if (event.target.classList.contains('remove-feature')) {
-            event.target.closest('.feature-item').remove();
-        }
-    });
-</script>
 @endsection
-
-
-
-
-
-
-
-
 
 <!-- [
     {

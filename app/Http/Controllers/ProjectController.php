@@ -28,6 +28,8 @@ class ProjectController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'user_id' => auth()->id(),
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date
         ]);
 
         return redirect()->route('projects.index');
