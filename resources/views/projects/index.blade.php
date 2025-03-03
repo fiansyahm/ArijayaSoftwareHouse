@@ -4,7 +4,9 @@
 <div class="container">
     <h1 class="mb-3">Daftar Proyek</h1>
 
+    @if(Auth::user()->isAdmin=='2')
     <a href="{{ route('projects.create') }}" class="btn btn-primary mb-3">Tambah Proyek</a>
+    @endif
 
     <table class="table table-bordered">
         <thead>
@@ -41,6 +43,7 @@
                         </ul>
                     </td>
                     <td>
+                        @if(Auth::user()->isAdmin=='2')
                         <a href="{{ route('projects.show', $project) }}" class="btn btn-info btn-sm">Detail</a>
                         <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning btn-sm">Edit</a>
                         <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display:inline;">
@@ -48,6 +51,7 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
                         </form>
+                        @endif
                         <a href="/projects/{{ $project->id }}/kanban" class="btn btn-warning btn-sm">Progres</a>
                     </td>
                 </tr>

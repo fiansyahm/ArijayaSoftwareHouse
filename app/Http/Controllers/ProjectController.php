@@ -9,27 +9,37 @@ use Illuminate\Support\Facades\Auth;
 class ProjectController extends Controller
 {
     public function index()
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user();
 
-    if ($user->isAdmin == 1) {
-        $projects = Project::all();
-    } else {
-        $projects = Project::whereJsonContains('programmers', strval($user->id))->get();
+        if ($user->isAdmin == 2) {
+            $projects = Project::all();
+        } else if ($user->isAdmin == 1) {
+            $projects = Project::whereJsonContains('programmers', strval($user->id))->get();
+        }
+
+        $users = User::all();
+        return view('projects.index', compact('projects', 'users'));
     }
-
-    $users = User::all();
-    return view('projects.index', compact('projects', 'users'));
-}
 
     public function create()
     {
+        $user = Auth::user();
+        if ($user->isAdmin != 2) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
         $users = User::all();
         return view('projects.create', compact('users'));
     }
 
     public function store(Request $request)
     {
+        $user = Auth::user();
+        if ($user->isAdmin != 2) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
         $request->validate([
             'name' => 'required',
             'description' => 'nullable',
@@ -52,17 +62,29 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        $user = Auth::user();
+        if ($user->isAdmin != 2) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
         return view('projects.show', compact('project'));
     }
 
     public function edit(Project $project)
     {
+        $user = Auth::user();
+        if ($user->isAdmin != 2) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
         $users = User::all();
         return view('projects.edit', compact('project', 'users'));
     }
 
     public function update(Request $request, Project $project)
     {
+        $user = Auth::user();
+        if ($user->isAdmin != 2) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
         $request->validate([
             'name' => 'required',
             'description' => 'nullable',
@@ -84,6 +106,10 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
+        $user = Auth::user();
+        if ($user->isAdmin != 2) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
         $project->delete();
         return redirect()->route('projects.index');
     }
@@ -103,40 +129,5 @@ class ProjectController extends Controller
 
         return response()->json(['message' => 'Progress updated successfully!']);
     }
-
-    public function assignProject(Request $request, $projectId, $featureId)
-    {
-        $project = Project::findOrFail($projectId);
-        $jsonData = $project->json;
-
-        foreach ($jsonData as &$feature) {
-            if ($feature['id'] == $featureId) {
-                $feature['assigned_to'] = $request->assigned_to;
-                break;
-            }
-        }
-
-        $project->update(['json' => $jsonData]);
-
-        return response()->json(['message' => 'Project assigned successfully!', 'json' => $jsonData]);
-    }
-
-    public function updateProgress(Request $request, $projectId, $featureId)
-    {
-        $project = Project::findOrFail($projectId);
-        $jsonData = $project->json;
-
-        foreach ($jsonData as &$feature) {
-            if ($feature['id'] == $featureId) {
-                $feature['status'] = $request->status; // 0: To Do, 1: Progress, 2: Done
-                break;
-            }
-        }
-
-        $project->update(['json' => $jsonData]);
-
-        return response()->json(['message' => 'Progress updated successfully!', 'json' => $jsonData]);
-    }
-
 
 }
