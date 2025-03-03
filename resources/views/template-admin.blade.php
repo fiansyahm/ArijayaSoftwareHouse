@@ -57,7 +57,7 @@
 								<i class="fa fa-phone" aria-hidden="true"></i>
 							</span>
 							<span>
-								<a href="https://api.whatsapp.com/send?phone=+6285812570358&text=Halo%20Admin%20Saya%20Mau%20Konsultasi%20Jasanya" target="_blank">(+62)87888971186</a>
+								<a href="https://api.whatsapp.com/send?phone=+6281515829443&text=Halo%20Admin%20Saya%20Mau%20Konsultasi%20Jasanya" target="_blank">(+62)81515829443</a>
 							</span>
 						</div>
 
@@ -211,7 +211,7 @@
 								<i class="fa fa-phone" aria-hidden="true"></i>
 							</span>
 							<span>
-								<a href="https://api.whatsapp.com/send?phone=+6285812570358&text=Halo%20Admin%20Saya%20Mau%20Konsultasi%20Jasanya" target="_blank">(+62)87888971186
+								<a href="https://api.whatsapp.com/send?phone=+6281515829443&text=Halo%20Admin%20Saya%20Mau%20Konsultasi%20Jasanya" target="_blank">(+62)81515829443
 								</a>
 							</span>
 						</div>
@@ -321,7 +321,7 @@
 								</span>
 
 								<span class="size-w-4">
-									arijayadigitalprinting@gmail.com
+									arijaya@gmail.com
 								</span>
 							</li>
 
@@ -331,9 +331,9 @@
 								</span>
 
 								<span class="size-w-4">
-									<a href="api.whatsapp.com/send?phone=6285812570358&text=Halo%20Admin%20Saya%20Mau%20Order%20">(+62)878 8897 1186</a>
+									<a href="api.whatsapp.com/send?phone=6281515829443&text=Halo%20Admin%20Saya%20Mau%20Order%20">(+62)878 8897 1186</a>
 									<br>
-									<a href="api.whatsapp.com/send?phone=6285812570358&text=Halo%20Admin%20Saya%20Mau%20Order%20">(+62)878 8897 1186</a>
+									<a href="api.whatsapp.com/send?phone=6281515829443&text=Halo%20Admin%20Saya%20Mau%20Order%20">(+62)878 8897 1186</a>
 								</span>
 							</li>
 						</ul>
@@ -436,7 +436,7 @@
 		<div class="bg-10">
 			<div class="container txt-center p-tb-15">
 				<span class="t1-s-2 cl-14">
-					Copyright @ 2023 ideea.link . All rights reserved. 
+					Copyright @ 2023 arijayasoftwarehouse.site . All rights reserved. 
 				</span>
 			</div>
 		</div>

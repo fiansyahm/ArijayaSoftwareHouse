@@ -35,7 +35,7 @@
 
 					    data-basealign="slide" 
     					data-responsive_offset="off"
-					    >Welcome to the Ideea.link</h2>
+					    >Welcome to the arijayasoftwarehouse.site</h2>
 
 					    <p class="tp-caption tp-resizeme caption-2" 
 						data-frames='[{"delay":1500,"speed":1500,"frame":"0","from":"x:right;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"auto:auto;","ease":"Power3.easeInOut"}]'
@@ -123,7 +123,7 @@
 
 					    data-basealign="slide" 
     					data-responsive_offset="off"
-					    >Welcome to the Ideea.link</h2>
+					    >Welcome to the arijayasoftwarehouse.site</h2>
 
 					    <p class="tp-caption tp-resizeme caption-2" 
 						data-frames='[{"delay":1500,"speed":1500,"frame":"0","from":"y:bottom;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"auto:auto;","ease":"Power3.easeInOut"}]'
@@ -211,7 +211,7 @@
 
 					    data-basealign="slide" 
     					data-responsive_offset="off"
-					    >Welcome to the Ideea.link</h2>
+					    >Welcome to the arijayasoftwarehouse.site</h2>
 
 					    <p class="tp-caption tp-resizeme caption-2" 
 						data-frames='[{"delay":1500,"speed":1500,"frame":"0","from":"x:500px;skX:-85px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"auto:auto;","ease":"Power3.easeInOut"}]'
@@ -604,7 +604,7 @@
 								var name = document.getElementById("name").value;
 								var phone = document.getElementById("phone").value;
 								var message = document.getElementById("message").value;
-								var url = "https://api.whatsapp.com/send?phone=6285812570358&text=Halo%20Admin%20Ideea.link%2C%20saya%20"+name+"%20dari%20"+phone+"%20ingin%20bertanya%20tentang%20"+message;
+								var url = "https://api.whatsapp.com/send?phone=6281515829443&text=Halo%20Admin%20arijayasoftwarehouse.site%2C%20saya%20"+name+"%20dari%20"+phone+"%20ingin%20bertanya%20tentang%20"+message;
 								window.open(url, '_blank');
 							}
 						</script>
@@ -629,24 +629,24 @@
 
 			<!--  -->
 			<div class="row justify-content-center">
-				<div class="col-sm-10 col-md-8 col-lg-4 p-b-40">
+				{{-- <div class="col-sm-10 col-md-8 col-lg-4 p-b-40">
 					<!-- Block2 -->
 					<div class="block2 bg-img2" style="background-image: url(images/project-01.jpg);">
 						<div class="block2-content trans-04">
 							<h4 class="block2-title t1-m-1 cl-0 flex-s-c trans-04">
-								akad.in
+								arijaya
 							</h4>
 
 							<p class="t1-s-2 cl-13 p-b-26">
-								Akad.in adalah sebuah website yang menyediakan layanan untuk membuat undangan online yang dapat diakses oleh semua orang.
+								arijaya adalah sebuah website yang menyediakan layanan untuk membuat undangan online yang dapat diakses oleh semua orang.
 							</p>
 
-							<a href="https://akad.in" class="d-inline-flex flex-c-c size-a-1 p-rl-15 t1-s-2 text-uppercase cl-6 bg-0 hov-btn3 trans-02" target="_blank">
+							<a href="https://arijaya" class="d-inline-flex flex-c-c size-a-1 p-rl-15 t1-s-2 text-uppercase cl-6 bg-0 hov-btn3 trans-02" target="_blank">
 								Read More
 							</a>
 						</div>
 					</div>
-				</div>
+				</div> --}}
 
 				{{-- <div class="col-sm-10 col-md-8 col-lg-4 p-b-40">
 					<!-- Block2 -->
