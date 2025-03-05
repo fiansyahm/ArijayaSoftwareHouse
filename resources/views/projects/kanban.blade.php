@@ -1,5 +1,5 @@
 @extends('template-wpadmin')
-@section('title', 'Home')
+@section('navbar_menu_project', 'active')
 @section('main')
     <h1>Project Trello Style</h1>
     <div class="row">

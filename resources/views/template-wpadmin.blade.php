@@ -300,10 +300,10 @@
                     </a>
                   </li>
 
-                  <li class="@yield('navbar_menu_resume')">
-                      <a class="nav-link" href="#submenu_resume_1" data-toggle="collapse" aria-expanded="false"
+                  <li class="nav-item @yield('navbar_menu_project')">
+                      <a class="nav-link" href="#submenu_project" data-toggle="collapse" aria-expanded="false"
                           class="dropdown-toggle">Project</a>
-                      <ul class="collapse list-unstyled" id="submenu_resume_1">
+                      <ul class="collapse list-unstyled" id="submenu_project">
                         
                         <li class="nav-item">
                             <a class="nav-link" href="/projects">

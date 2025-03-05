@@ -1,5 +1,5 @@
 @extends('template-wpadmin')
-@section('title', 'Home')
+@section('navbar_menu_project', 'active')
 @section('main')
 <div class="container">
     <h1>Tambah Proyek</h1>

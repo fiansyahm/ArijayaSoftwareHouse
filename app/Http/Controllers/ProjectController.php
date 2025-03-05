@@ -5,6 +5,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use DateTime;
 
 class ProjectController extends Controller
 {
@@ -80,29 +81,53 @@ class ProjectController extends Controller
     }
 
     public function update(Request $request, Project $project)
-    {
-        $user = Auth::user();
-        if ($user->isAdmin != 2) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
-        $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
-            'json' => 'required|string', // JSON dalam bentuk string
-        ]);
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'start_date' => 'nullable|date',
+        'end_date' => 'nullable|date|after_or_equal:start_date',
+        'isDone' => 'required|boolean',
+        'programmers' => 'nullable|array',
+        'json' => 'required|array',
+        'json.*.id' => 'required|integer',
+        'json.*.feature' => 'required|string',
+        'json.*.status' => 'required|in:0,1',
+        'json.*.stakeholder' => 'required|string',
+        'json.*.assigned_to' => 'required|string',
+        'json.*.start' => 'required|date',
+        'json.*.end' => 'required|date|after_or_equal:json.*.start',
+    ]);
 
-        $project->update($request->all());
+    // Process JSON data
+    $jsonData = $request->input('json');
+    foreach ($jsonData as &$feature) {
+        // Cast numeric fields to integers
+        $feature['id'] = (int)$feature['id'];
+        $feature['status'] = (int)$feature['status'];
 
-         // Decode JSON dari textarea dan simpan ke database
-        $decodedJson = json_decode($request->json, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            return back()->withErrors(['json' => 'Format JSON tidak valid!']);
-        }
+        // Process stakeholders into an array
+        $feature['stakeholder'] = array_map('trim', explode(',', $feature['stakeholder']));
 
-        $project->update(['json' => $decodedJson]);
-
-        return redirect()->route('projects.index');
+        // Ensure datetime format includes seconds
+        $startDateTime = new DateTime(str_replace('T', ' ', $feature['start']));
+        $endDateTime = new DateTime(str_replace('T', ' ', $feature['end']));
+        $feature['start'] = $startDateTime->format('Y-m-d H:i:s');
+        $feature['end'] = $endDateTime->format('Y-m-d H:i:s');
     }
+
+    $project->update([
+        'name' => $request->name,
+        'description' => $request->description,
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+        'isDone' => $request->isDone,
+        'programmers' => json_encode($request->programmers ?? []),
+        'json' => $jsonData,
+    ]);
+
+    return redirect()->route('projects.index')->with('success', 'Project updated successfully');
+}
 
     public function destroy(Project $project)
     {
