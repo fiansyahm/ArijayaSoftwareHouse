@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OrderController;
 use App\Models\Project;
 
 Route::group(['middleware' => ['auth']], function () {
@@ -67,3 +68,5 @@ Route::get('/projects/{id}/kanban', function($id) {
 
     return view('projects.kanban', compact('project', 'features'));
 });
+
+Route::resource('orders', OrderController::class);

@@ -313,6 +313,19 @@
             
                       </ul>
                   </li>
+                  <li class="nav-item @yield('navbar_menu_order')">
+                    <a class="nav-link" href="#submenu_order" data-toggle="collapse" aria-expanded="false"
+                        class="dropdown-toggle">Order</a>
+                    <ul class="collapse list-unstyled" id="submenu_order">
+                      
+                      <li class="nav-item">
+                          <a class="nav-link" href="/orders">
+                              List Order
+                          </a>
+                      </li>
+          
+                    </ul>
+                </li>
                     
                 </ul>
                 
