@@ -70,3 +70,4 @@ Route::get('/projects/{id}/kanban', function($id) {
 });
 
 Route::resource('orders', OrderController::class);
+Route::get('/orders/{id}/getPO', [OrderController::class, 'getPO']);

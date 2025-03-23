@@ -313,6 +313,7 @@
             
                       </ul>
                   </li>
+                  @if(Auth::user()->isAdmin==2)
                   <li class="nav-item @yield('navbar_menu_order')">
                     <a class="nav-link" href="#submenu_order" data-toggle="collapse" aria-expanded="false"
                         class="dropdown-toggle">Order</a>
@@ -325,7 +326,8 @@
                       </li>
           
                     </ul>
-                </li>
+                  </li>
+                  @endif
                     
                 </ul>
                 

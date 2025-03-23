@@ -27,6 +27,7 @@
                         @csrf @method('DELETE')
                         <button class="btn btn-danger" type="submit">Delete</button>
                     </form>
+                    <a class="btn btn-info" href="/orders/{{$order->id}}/getPO">get PO</a>
                 </td>
             </tr>
         @endforeach
