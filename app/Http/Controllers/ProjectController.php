@@ -9,6 +9,10 @@ use DateTime;
 
 class ProjectController extends Controller
 {
+    public function home(){
+        $projects = Project::all();
+        return view('home', compact('projects'));
+    }
     public function index()
     {
         $user = Auth::user();
@@ -81,53 +85,63 @@ class ProjectController extends Controller
     }
 
     public function update(Request $request, Project $project)
-{
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'start_date' => 'nullable|date',
-        'end_date' => 'nullable|date|after_or_equal:start_date',
-        'isDone' => 'required|boolean',
-        'programmers' => 'nullable|array',
-        'json' => 'required|array',
-        'json.*.id' => 'required|integer',
-        'json.*.feature' => 'required|string',
-        'json.*.status' => 'required|in:0,1',
-        'json.*.stakeholder' => 'required|string',
-        'json.*.assigned_to' => 'required|string',
-        'json.*.start' => 'required|date',
-        'json.*.end' => 'required|date|after_or_equal:json.*.start',
-    ]);
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'thumbnail' => 'nullable|string',
+            'brief' => 'nullable|string',
+            'demo' => 'nullable|string',
+            'file' => 'nullable|string',
+            'tech' => 'nullable|string',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'isDone' => 'required|boolean',
+            'programmers' => 'nullable|array',
+            'json' => 'required|array',
+            'json.*.id' => 'required|integer',
+            'json.*.feature' => 'required|string',
+            'json.*.status' => 'required|in:0,1',
+            'json.*.stakeholder' => 'required|string',
+            'json.*.assigned_to' => 'required|string',
+            'json.*.start' => 'required|date',
+            'json.*.end' => 'required|date|after_or_equal:json.*.start',
+        ]);
 
-    // Process JSON data
-    $jsonData = $request->input('json');
-    foreach ($jsonData as &$feature) {
-        // Cast numeric fields to integers
-        $feature['id'] = (int)$feature['id'];
-        $feature['status'] = (int)$feature['status'];
+        // Process JSON data
+        $jsonData = $request->input('json');
+        foreach ($jsonData as &$feature) {
+            // Cast numeric fields to integers
+            $feature['id'] = (int)$feature['id'];
+            $feature['status'] = (int)$feature['status'];
 
-        // Process stakeholders into an array
-        $feature['stakeholder'] = array_map('trim', explode(',', $feature['stakeholder']));
+            // Process stakeholders into an array
+            $feature['stakeholder'] = array_map('trim', explode(',', $feature['stakeholder']));
 
-        // Ensure datetime format includes seconds
-        $startDateTime = new DateTime(str_replace('T', ' ', $feature['start']));
-        $endDateTime = new DateTime(str_replace('T', ' ', $feature['end']));
-        $feature['start'] = $startDateTime->format('Y-m-d H:i:s');
-        $feature['end'] = $endDateTime->format('Y-m-d H:i:s');
+            // Ensure datetime format includes seconds
+            $startDateTime = new DateTime(str_replace('T', ' ', $feature['start']));
+            $endDateTime = new DateTime(str_replace('T', ' ', $feature['end']));
+            $feature['start'] = $startDateTime->format('Y-m-d H:i:s');
+            $feature['end'] = $endDateTime->format('Y-m-d H:i:s');
+        }
+
+        $project->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'isDone' => $request->isDone,
+            'programmers' => json_encode($request->programmers ?? []),
+            'json' => $jsonData,
+            'thumbnail' => $request->thumbnail,
+            'brief' => $request->brief,
+            'demo' => $request->demo,
+            'file' => $request->file,
+            'tech' => $request->tech
+        ]);
+
+        return redirect()->route('projects.index')->with('success', 'Project updated successfully');
     }
-
-    $project->update([
-        'name' => $request->name,
-        'description' => $request->description,
-        'start_date' => $request->start_date,
-        'end_date' => $request->end_date,
-        'isDone' => $request->isDone,
-        'programmers' => json_encode($request->programmers ?? []),
-        'json' => $jsonData,
-    ]);
-
-    return redirect()->route('projects.index')->with('success', 'Project updated successfully');
-}
 
     public function destroy(Project $project)
     {

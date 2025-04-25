@@ -25,9 +25,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard']);
 });
 
-Route::get('/', function () {
-    return view('home');
-});
 
 Route::get('/home', function () {
     return view('home');
@@ -39,6 +36,7 @@ Route::get('/session/logout', [SessionController::class, 'logout']);
 Route::get('/session/register', [SessionController::class, 'register']);
 Route::post('/session/register', [SessionController::class, 'createUser']);
 
+Route::get('/', [ProjectController::class, 'home']);
 Route::Resource('projects', ProjectController::class);
 Route::post('/projects/{id}/update-json', [ProjectController::class, 'updateJson']);
 Route::get('/projects/{id}/kanban', function($id) {

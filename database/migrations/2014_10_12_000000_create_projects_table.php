@@ -14,15 +14,20 @@ class CreateProjectsTable extends Migration
     public function up()
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->bigIncrements('id');
+            $table->string('name', 191);
+            $table->text('thumbnail')->nullable();
+            $table->text('brief')->nullable();
+            $table->text('demo')->nullable();
+            $table->text('file')->nullable();
+            $table->text('tech')->nullable();
             $table->text('description')->nullable();
-            $table->json('json')->nullable();
+            $table->longText('json')->collation('utf8mb4_bin')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->boolean('isDone')->default(false);
-            $table->text('programmers')->nullable(); // Menyimpan ID user dalam format JSON
-            $table->timestamps();
+            $table->longText('programmers');
+            $table->timestamps(); // created_at & updated_at
         });
     }
 

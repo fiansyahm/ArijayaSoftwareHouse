@@ -12,7 +12,26 @@
             <label for="name" class="form-label">Nama Proyek</label>
             <input type="text" id="name" name="name" class="form-control" value="{{ $project->name }}" required>
         </div>
-        
+        <div class="mb-3">
+            <label for="brief" class="form-label">Brief</label>
+            <input type="text" id="brief" name="brief" class="form-control" value="{{ $project->brief }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="thumbnail" class="form-label">Thumbnail</label>
+            <input type="text" id="thumbnail" name="thumbnail" class="form-control" value="{{ $project->brief }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="tech" class="form-label">Teknologi</label>
+            <input type="text" id="tech" name="tech" class="form-control" value="{{ $project->tech }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="demo" class="form-label">Demo</label>
+            <input type="text" id="demo" name="demo" class="form-control" value="{{ $project->demo }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="file" class="form-label">file</label>
+            <input type="text" id="file" name="file" class="form-control" value="{{ $project->file }}" required>
+        </div>
         <div class="mb-3">
             <label for="description" class="form-label">Deskripsi</label>
             <textarea id="description" name="description" class="form-control">{{ $project->description }}</textarea>
