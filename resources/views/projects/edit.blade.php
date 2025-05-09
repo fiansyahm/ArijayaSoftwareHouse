@@ -13,12 +13,12 @@
             <input type="text" id="name" name="name" class="form-control" value="{{ $project->name }}" required>
         </div>
         <div class="mb-3">
-            <label for="brief" class="form-label">Brief</label>
+            <label for="brief" class="form-label">Deskripsi</label>
             <input type="text" id="brief" name="brief" class="form-control" value="{{ $project->brief }}" required>
         </div>
         <div class="mb-3">
             <label for="thumbnail" class="form-label">Thumbnail</label>
-            <input type="text" id="thumbnail" name="thumbnail" class="form-control" value="{{ $project->brief }}" required>
+            <input type="text" id="thumbnail" name="thumbnail" class="form-control" value="{{ $project->thumbnail }}" required>
         </div>
         <div class="mb-3">
             <label for="tech" class="form-label">Teknologi</label>
@@ -26,14 +26,14 @@
         </div>
         <div class="mb-3">
             <label for="demo" class="form-label">Demo</label>
-            <input type="text" id="demo" name="demo" class="form-control" value="{{ $project->demo }}" required>
+            <input type="text" id="demo" name="demo" class="form-control" value="{{ $project->demo }}">
         </div>
         <div class="mb-3">
             <label for="file" class="form-label">file</label>
-            <input type="text" id="file" name="file" class="form-control" value="{{ $project->file }}" required>
+            <input type="text" id="file" name="file" class="form-control" value="{{ $project->file }}">
         </div>
         <div class="mb-3">
-            <label for="description" class="form-label">Deskripsi</label>
+            <label for="description" class="form-label">Keterangan [For Developer]</label>
             <textarea id="description" name="description" class="form-control">{{ $project->description }}</textarea>
         </div>
 

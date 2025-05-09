@@ -24,7 +24,8 @@ class OrderController extends Controller
     {
         if(Auth::user()->isAdmin != 2)return 'Access Denied';
         Order::create($request->all());
-        return redirect()->route('orders.index')->with('success', 'Order created successfully!');
+        // return redirect()->route('orders.index')->with('success', 'Order created successfully!');
+        return redirect()->back()->with('success', 'Purchase Order Sukses Dibuat, Silahkan Chat Admin Untuk Konfirmasi!');
     }
 
     public function edit(Order $order)

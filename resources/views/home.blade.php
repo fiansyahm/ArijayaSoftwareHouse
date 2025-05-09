@@ -409,7 +409,8 @@
 
 			<!--  -->
 			<div class="row justify-content-center">
-				<div class="col-sm-10 col-md-8 col-lg-4 p-b-40">
+				
+				{{-- <div class="col-sm-10 col-md-8 col-lg-4 p-b-40">
 					<!-- Block2 -->
 					<div class="block2 bg-img2" style="background-image: url(images/project-01.jpg);">
 						<div class="block2-content trans-04">
@@ -426,7 +427,8 @@
 							</a>
 						</div>
 					</div>
-				</div> 
+				</div>  --}}
+
 				@foreach($projects as $project)
 				<div class="col-sm-10 col-md-8 col-lg-4 p-b-40">
 					<!-- Block2 -->
@@ -442,9 +444,16 @@
 								{{ $project->tech }}
 							</p>
 
-							<a href="{{ $project->demo }}" class="d-inline-flex flex-c-c size-a-1 p-rl-15 t1-s-2 text-uppercase cl-6 bg-0 hov-btn3 trans-02">
+							@if($project->demo != null)
+							<a href="{{ $project->demo }}" class="d-inline-flex flex-c-c size-a-1 p-rl-15 t1-s-2 text-uppercase cl-6 bg-0 hov-btn3 trans-02 mt-2">
 								Lihat Demo
 							</a>
+							@endif
+							@if($project->file != null)
+							<a href="{{ $project->file }}" class="d-inline-flex flex-c-c size-a-1 p-rl-15 t1-s-2 text-uppercase cl-6 bg-0 hov-btn3 trans-02 mt-2">
+								Download Aplikasi
+							</a>
+							@endif
 							
 
 						</div>
