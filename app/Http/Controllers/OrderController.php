@@ -9,20 +9,17 @@ class OrderController extends Controller
 {
     public function index()
     {
-        if(Auth::user()->isAdmin != 2)return 'Access Denied';
         $orders = Order::all();
         return view('orders.index', compact('orders'));
     }
 
     public function create()
     {
-        if(Auth::user()->isAdmin != 2)return 'Access Denied';
         return view('orders.create');
     }
 
     public function store(Request $request)
     {
-        if(Auth::user()->isAdmin != 2)return 'Access Denied';
         Order::create($request->all());
         // return redirect()->route('orders.index')->with('success', 'Order created successfully!');
         return redirect()->back()->with('success', 'Purchase Order Sukses Dibuat, Silahkan Chat Admin Untuk Konfirmasi!');
