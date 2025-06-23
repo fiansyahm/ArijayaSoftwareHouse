@@ -21,7 +21,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TemplatechatController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ScheduleController;
 use App\Models\Project;
+
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/wpadmin', [AdminController::class, 'wpadmin']);
@@ -58,6 +60,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/edit-myattendance/{id}', [AttendanceController::class, 'editMyattendance']);
     Route::post('/update-myattendance/{user}', [AttendanceController::class, 'updateMyattendance']);
     Route::get('/delete-myattendance/{user}', [AttendanceController::class, 'deleteMyattendance']);
+});
+
+// Schedule
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/admin/schedule', [ScheduleController::class, 'index']);
+    Route::get('/admin/schedule/create', [ScheduleController::class, 'create']);
+    Route::post('/admin/schedule/create', [ScheduleController::class,'store']);
+    Route::get('/admin/schedule/delete/{id}', [ScheduleController::class, 'delete']);
+    Route::get('/admin/schedule/edit/{id}', [ScheduleController::class, 'edit']);
+    Route::post('/admin/schedule/update/{id}', [ScheduleController::class, 'update']);
+    Route::get('/admin/schedule/updateStatus/{id}', [ScheduleController::class, 'updateStatus']);
 });
 
 
