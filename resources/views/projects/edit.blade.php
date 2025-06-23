@@ -104,7 +104,11 @@
             <button type="button" class="btn btn-primary mt-2" id="add-feature">Tambah Fitur</button>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3"
+            @if(Auth::user()->isAdmin != 2)
+                style="display: none;"
+            @endif
+        >
             <label for="programmers" class="form-label">Programmer</label>
             <div>
                 @php

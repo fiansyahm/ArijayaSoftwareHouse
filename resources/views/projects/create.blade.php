@@ -26,15 +26,27 @@
             <input type="date" id="end_date" name="end_date" class="form-control">
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3" 
+            @if(Auth::user()->isAdmin != 2)
+                style="display: none;"
+            @endif
+        >
             <label class="form-label">Programmer</label>
             <div class="border p-2 rounded">
                 @foreach($users as $user)
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="user_{{ $user->id }}" name="programmers[]" value="{{ $user->id }}">
+                        <input 
+                            type="checkbox" 
+                            class="form-check-input" 
+                            id="user_{{ $user->id }}" 
+                            name="programmers[]" 
+                            value="{{ $user->id }}"
+                            @if($user->name == "Project Manager") checked @endif
+                        >
                         <label class="form-check-label" for="user_{{ $user->id }}">{{ $user->name }}</label>
                     </div>
                 @endforeach
+
             </div>
         </div>
 

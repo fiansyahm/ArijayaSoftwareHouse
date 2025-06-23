@@ -4,7 +4,7 @@
 <div class="container">
     <h1 class="mb-3">Daftar Proyek</h1>
 
-    @if(Auth::user()->isAdmin=='2')
+    @if(Auth::user()->isAdmin=='2' || Auth::user()->isAdmin=='3')
     <a href="{{ route('projects.create') }}" class="btn btn-primary mb-3">Tambah Proyek</a>
     @endif
 
@@ -17,7 +17,9 @@
                 <th>start_date</th>
                 <th>end_date</th>
                 <th>Status</th>
+                @if(Auth::user()->isAdmin=='2')
                 <th>Programmers</th>
+                @endif
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -29,7 +31,8 @@
                     <td>{{ $project->description }}</td>
                     <td>{{ $project->start_date }}</td>
                     <td>{{ $project->end_date }}</td>
-                    <td>{{ $project->isDone ? 'Selesai' : 'Belum Selesai' }}</td>
+                    <td class="text-{{ $project->isDone ? 'success' : 'danger' }}">{{ $project->isDone ? 'Selesai' : 'Belum Selesai' }}</td>
+                    @if(Auth::user()->isAdmin=='2')
                     <td>
                         @php
                             $selectedUsers = json_decode($project->programmers, true) ?? [];
@@ -42,17 +45,22 @@
                             @endforeach
                         </ul>
                     </td>
+                    @endif
                     <td>
-                        @if(Auth::user()->isAdmin=='2')
+                        @if(Auth::user()->isAdmin=='2'||Auth::user()->isAdmin=='3')
                         <a href="{{ route('projects.show', $project) }}" class="btn btn-info btn-sm">Detail</a>
                         <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                        </form>
+                        
+                            @if(Auth::user()->isAdmin=='2')
+                                <form action="{{ route('projects.destroy', $project) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                </form>
+                            @endif
+
                         @endif
-                        <a href="/projects/{{ $project->id }}/kanban" class="btn btn-warning btn-sm">Progres</a>
+                        <a href="/projects/{{ $project->id }}/kanban" class="btn btn-success btn-sm">Progres</a>
                     </td>
                 </tr>
             @endforeach

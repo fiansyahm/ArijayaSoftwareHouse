@@ -17,7 +17,7 @@ class ProjectController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->isAdmin == 2) {
+        if ($user->isAdmin == 2||$user->isAdmin == 3) {
             $projects = Project::all();
         } else if ($user->isAdmin == 1) {
             $projects = Project::whereJsonContains('programmers', strval($user->id))->get();
@@ -30,10 +30,9 @@ class ProjectController extends Controller
     public function create()
     {
         $user = Auth::user();
-        if ($user->isAdmin != 2) {
+        if (!($user->isAdmin ==2 || $user->isAdmin == 3)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
-
         $users = User::all();
         return view('projects.create', compact('users'));
     }
@@ -41,7 +40,8 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        if ($user->isAdmin != 2) {
+        
+        if (!($user->isAdmin ==2 || $user->isAdmin == 3)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -68,7 +68,7 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $user = Auth::user();
-        if ($user->isAdmin != 2) {
+        if ($user->isAdmin != 1) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         return view('projects.show', compact('project'));
@@ -77,7 +77,7 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $user = Auth::user();
-        if ($user->isAdmin != 2) {
+        if (!($user->isAdmin ==2 || $user->isAdmin == 3)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $users = User::all();

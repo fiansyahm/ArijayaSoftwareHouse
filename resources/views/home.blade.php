@@ -430,35 +430,39 @@
 				</div>  --}}
 
 				@foreach($projects as $project)
-				<div class="col-sm-10 col-md-8 col-lg-4 p-b-40">
-					<!-- Block2 -->
-					<div class="block2 bg-img2" style="background-image: url({{ $project->thumbnail }});">
-						<div class="block2-content trans-04">
-							<h4 class="block2-title t1-m-1 cl-0 flex-s-c trans-04">
-								{{ $project->name }}
-							</h4>
 
-							<p class="t1-s-2 cl-13 p-b-26">
-								{{ $project->brief }}<br><br>
-								Teknologi yang digunakan:<br>
-								{{ $project->tech }}
-							</p>
+					@if($project->isDone == 1)
+						<div class="col-sm-10 col-md-8 col-lg-4 p-b-40">
+							<!-- Block2 -->
+							<div class="block2 bg-img2" style="background-image: url({{ $project->thumbnail }});">
+								<div class="block2-content trans-04">
+									<h4 class="block2-title t1-m-1 cl-0 flex-s-c trans-04">
+										{{ $project->name }}
+									</h4>
 
-							@if($project->demo != null)
-							<a href="{{ $project->demo }}" class="d-inline-flex flex-c-c size-a-1 p-rl-15 t1-s-2 text-uppercase cl-6 bg-0 hov-btn3 trans-02 mt-2">
-								Lihat Demo
-							</a>
-							@endif
-							@if($project->file != null)
-							<a href="{{ $project->file }}" class="d-inline-flex flex-c-c size-a-1 p-rl-15 t1-s-2 text-uppercase cl-6 bg-0 hov-btn3 trans-02 mt-2">
-								Download Aplikasi
-							</a>
-							@endif
-							
+									<p class="t1-s-2 cl-13 p-b-26">
+										{{ $project->brief }}<br><br>
+										Teknologi yang digunakan:<br>
+										{{ $project->tech }}
+									</p>
 
+									@if($project->demo != null)
+									<a href="{{ $project->demo }}" class="d-inline-flex flex-c-c size-a-1 p-rl-15 t1-s-2 text-uppercase cl-6 bg-0 hov-btn3 trans-02 mt-2">
+										Lihat Demo
+									</a>
+									@endif
+									@if($project->file != null)
+									<a href="{{ $project->file }}" class="d-inline-flex flex-c-c size-a-1 p-rl-15 t1-s-2 text-uppercase cl-6 bg-0 hov-btn3 trans-02 mt-2">
+										Download Aplikasi
+									</a>
+									@endif
+									
+
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
+					@endif
+
 				@endforeach
 
 			</div>
