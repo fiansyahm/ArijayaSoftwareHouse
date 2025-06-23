@@ -18,11 +18,46 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TemplatechatController;
+use App\Http\Controllers\AbsenceController;
+use App\Http\Controllers\AttendanceController;
 use App\Models\Project;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/wpadmin', [AdminController::class, 'wpadmin']);
     Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard']);
+    Route::resource('templatechats', TemplatechatController::class);
+});
+
+
+// Absence
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/absence/{day}/{month}/{year}/{jenis_absen}', [AbsenceController::class, 'index']);
+    Route::get('/absence/create', [AbsenceController::class, 'create']);
+    Route::post('/absence/create', [AbsenceController::class,'store']);
+    Route::get('/absence/absent', [AbsenceController::class, 'absent']);
+    Route::post('/absence/absent', [AbsenceController::class, 'store_absent']);
+    Route::get('/absence/report', [AbsenceController::class, 'report']);
+    Route::post('/absence/report', [AbsenceController::class, 'store_report']);
+    Route::get('/absence/report/list/{day}/{month}/{year}/{jenis_absen}', [AbsenceController::class, 'list_report']);
+    Route::get('/absence/calender', [AbsenceController::class, 'calender']);
+    Route::get('/absence/shift', [AbsenceController::class, 'shift']);
+    Route::get('/list-holiday', [AbsenceController::class, 'listHoliday']);
+    Route::get('/add-holiday', [AbsenceController::class, 'addHoliday']);
+    Route::post('/add-holiday', [AbsenceController::class, 'storeHoliday']);
+    Route::get('/edit-holiday/{id}', [AbsenceController::class, 'editHoliday']);
+    Route::post('/edit-holiday/{id}', [AbsenceController::class, 'updateHoliday']);
+    Route::get('/delete-holiday/{id}', [AbsenceController::class, 'deleteHoliday']);
+    Route::get('/absensi', [AbsenceController::class, 'create1']);
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/myattendance', [AttendanceController::class, 'index']);
+    Route::get('/create-myattendance', [AttendanceController::class, 'createMyattendance']);
+    Route::post('/add-myattendance', [AttendanceController::class, 'addMyattendance']);
+    Route::get('/edit-myattendance/{id}', [AttendanceController::class, 'editMyattendance']);
+    Route::post('/update-myattendance/{user}', [AttendanceController::class, 'updateMyattendance']);
+    Route::get('/delete-myattendance/{user}', [AttendanceController::class, 'deleteMyattendance']);
 });
 
 

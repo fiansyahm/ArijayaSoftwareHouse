@@ -300,6 +300,80 @@
                     </a>
                   </li>
 
+                  @if(Auth::check()&&(Auth::user()->isAdmin=='2'||Auth::user()->isAdmin=='3'))
+                  <li class="@yield('navbar_menu_absence')">
+                    <a class="nav-link" href="#submenu_absence" data-toggle="collapse" aria-expanded="false"
+                        class="dropdown-toggle">Laporan & Absensi</a>
+                    <ul class="collapse list-unstyled" id="submenu_absence">
+                        <?php
+                            // get current month
+                            $day = date('d');
+                            $month = date('m');
+                            $year = date('Y');
+                        ?>
+                        @if(Auth::check()&&Auth::user()->isAdmin=='2')
+                            <li class="nav-item">
+                                <a class="nav-link" href="/absence/calender">
+                                    Kalender Absensi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/absence/shift">
+                                    Kalender Shift
+                                </a>
+                            </li>
+                            @if(Auth::user()->id=='1')
+                            <li class="nav-item">
+                                <a class="nav-link" href="/myattendance">
+                                    Daftar User
+                                </a>
+                            </li>
+                            @endif
+                            <li class="nav-item">
+                                <a class="nav-link" href="/absence/{{$day}}/{{$month}}/{{$year}}/all">
+                                    Daftar Absensi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/absence/report/list/{{$day}}/{{$month}}/{{$year}}/all">
+                                    Daftar Laporan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/absence/create">
+                                    Form Absensi Online
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/absence/report">
+                                    Form Laporan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/schedule">
+                                    Jadwal Absensi
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="/absensi">
+                                    Form Absensi
+                                </a>
+                            </li><li class="nav-item">
+                                <a class="nav-link" href="/absence/report">
+                                    Form Laporan
+                                </a>
+                            </li>
+                        @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="/absence/absent">
+                                Form Izin
+                            </a>
+                        </li>
+                    </ul>
+                  </li>
+                  @endif
+
                   <li class="nav-item @yield('navbar_menu_project')">
                       <a class="nav-link" href="#submenu_project" data-toggle="collapse" aria-expanded="false"
                           class="dropdown-toggle">Project</a>
@@ -313,6 +387,23 @@
             
                       </ul>
                   </li>
+                  
+                  @if(Auth::user()->isAdmin==2||Auth::user()->isAdmin==3)
+                  <li class="nav-item @yield('navbar_menu_templatechat')">
+                      <a class="nav-link" href="#submenu_templatechats" data-toggle="collapse" aria-expanded="false"
+                          class="dropdown-toggle">Template Chat</a>
+                      <ul class="collapse list-unstyled" id="submenu_templatechats">
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="/templatechats">
+                                List Template Chat
+                            </a>
+                        </li>
+            
+                      </ul>
+                  </li>
+                  @endif
+
                   @if(Auth::user()->isAdmin==2)
                   <li class="nav-item @yield('navbar_menu_order')">
                     <a class="nav-link" href="#submenu_order" data-toggle="collapse" aria-expanded="false"
