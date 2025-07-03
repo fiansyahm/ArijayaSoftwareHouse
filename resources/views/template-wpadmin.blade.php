@@ -404,7 +404,7 @@
                   </li>
                   @endif
 
-                  @if(Auth::user()->isAdmin==2)
+                  @if(Auth::user()->isAdmin==2||Auth::user()->isAdmin==3)
                   <li class="nav-item @yield('navbar_menu_order')">
                     <a class="nav-link" href="#submenu_order" data-toggle="collapse" aria-expanded="false"
                         class="dropdown-toggle">Order</a>

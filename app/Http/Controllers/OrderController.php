@@ -46,7 +46,7 @@ class OrderController extends Controller
     }
 
     public function getPO($id){
-        if(Auth::user()->isAdmin != 2)return 'Access Denied';
+        if (!in_array(Auth::user()->isAdmin, [2, 3])) return 'Access Denied';
         $order = Order::find($id);
         $customer_name = $order->customer_name;
         $list_features = $order->main_features;
