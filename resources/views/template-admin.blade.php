@@ -125,6 +125,9 @@
                             <a class="nav-link active" aria-current="page" href="/">Beranda</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="/our-projects">Proyek Kami</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="#about.html">Tentang Kami</a>
                         </li>
                         <li class="nav-item dropdown">
@@ -139,11 +142,6 @@
                                 <li><a class="dropdown-item" href="/service/resume">Jasa Pembuatan Resume</a></li>
                             </ul>
                         </li>
-
-	                  <li class="nav-item">
-                            <a class="nav-link" href="#about.html">Proyek Kami</a>
-                        </li>
-
                         <li class="nav-item">
                             <a class="nav-link" href="#contact.html">Kontak Kami</a>
                         </li>

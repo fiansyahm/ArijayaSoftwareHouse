@@ -169,4 +169,9 @@ class ProjectController extends Controller
         return response()->json(['message' => 'Progress updated successfully!']);
     }
 
+    public function ourprojects() {
+        $projects = Project::all();
+        return view('projects.ourprojects', compact('projects'));
+    }
+
 }
