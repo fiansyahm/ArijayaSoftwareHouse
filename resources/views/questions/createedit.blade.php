@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <label for="usertype">Peruntukan</label>
-            <input type="text" name="usertype" class="form-control" value="{{ old('usertype', $question->usertype ?? '') }}" placeholder="customer/member/admin/training/prompt/shopee">
+            <input type="text" name="usertype" class="form-control" value="{{ old('usertype', $question->usertype ?? '') }}" placeholder="customer/member/admin/training/prompt">
         </div>
         <div class="form-group">
             <label for="youtube">Youtube</label>
