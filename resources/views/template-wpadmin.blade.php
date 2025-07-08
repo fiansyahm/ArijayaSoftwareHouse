@@ -399,6 +399,12 @@
                                 List Template Chat
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link @yield('navbar_side_1')" href="/questions">
+                                Q&A
+                            </a>
+                        </li>
             
                       </ul>
                   </li>

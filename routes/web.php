@@ -22,13 +22,13 @@ use App\Http\Controllers\TemplatechatController;
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\QuestionController;
 use App\Models\Project;
 
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/wpadmin', [AdminController::class, 'wpadmin']);
     Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard']);
-    Route::resource('templatechats', TemplatechatController::class);
 });
 
 
@@ -118,3 +118,11 @@ Route::get('/our-projects', [ProjectController::class, 'ourprojects']);
 
 Route::resource('orders', OrderController::class);
 Route::get('/orders/{id}/getPO', [OrderController::class, 'getPO']);
+
+// Questions
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('questions', QuestionController::class);
+    Route::get('/question/{id}',[QuestionController::class,'list']);
+    Route::get('/question/{id}/change/{usertype}',[QuestionController::class,'change']);
+    Route::resource('templatechats', TemplatechatController::class);
+});
