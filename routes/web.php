@@ -23,6 +23,7 @@ use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\AffliateproductController;
 use App\Models\Project;
 
 
@@ -125,4 +126,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/question/{id}',[QuestionController::class,'list']);
     Route::get('/question/{id}/change/{usertype}',[QuestionController::class,'change']);
     Route::resource('templatechats', TemplatechatController::class);
+    Route::resource('affliateproducts', AffliateproductController::class);
 });

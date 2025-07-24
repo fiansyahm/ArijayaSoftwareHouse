@@ -208,6 +208,14 @@
                             </ul>
                         </li>
                     @endif
+                    @if(Auth::user()->isAdmin == '2' || Auth::user()->isAdmin == '3')
+                        <li class="nav-item @yield('navbar_menu_affliate')">
+                            <a class="nav-link" href="#submenu_affliate" data-bs-toggle="collapse" aria-expanded="false">Affliate Products</a>
+                            <ul class="collapse list-unstyled" id="submenu_affliate">
+                                <li class="nav-item"><a class="nav-link" href="/affliateproducts">List Affliate Products</a></li>
+                            </ul>
+                        </li>
+                    @endif
                 </ul>
                 <div class="footer">
                     <p>
@@ -259,5 +267,6 @@
         });
     </script>
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v84a3a4012de94ce1a686ba8c167c359c1696973893317" integrity="sha512-euoFGowhlaLqXsPWQ48qSkBSCFs3DPRyiwVu3FjR96cMPx+Fr+gpWRhIafcHwqwCqWS42RZhIudOvEI+Ckf6MA==" data-cf-beacon='{"rayId":"83b165448a9b4056","version":"2023.10.0","token":"cd0b4b3a733644fc843ef0b185f98241"}' crossorigin="anonymous"></script>
+    @yield('scripts')
 </body>
 </html>
