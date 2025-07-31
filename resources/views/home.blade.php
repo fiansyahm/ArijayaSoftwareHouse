@@ -46,10 +46,53 @@ Home
             color: var(--bs-primary) !important;
         }
         /* Adjust existing custom classes for dark theme visibility */
-        .cl-3 { color: var(--bs-text-light-custom); } /* Assuming cl-3 was dark text on light bg */
-        .cl-12 { color: var(--bs-text-light-custom); } /* Assuming cl-12 was dark text on light bg */
-        .cl-13 { color: var(--bs-text-light-custom); } /* Assuming cl-13 was dark text on light bg */
-        .bg-3 { background-color: var(--bs-primary); } /* Assuming bg-3 was a separator color */
+        .cl-3 { color: var(--bs-text-light-custom); }
+        .cl-12 { color: var(--bs-text-light-custom); }
+        .cl-13 { color: var(--bs-text-light-custom); }
+        .bg-3 { background-color: var(--bs-primary); }
+        /* Styles for project section hover and click effect */
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s ease;
+        }
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            padding: 1.5rem;
+        }
+        .project-card:hover .project-overlay,
+        .project-card.active .project-overlay {
+            opacity: 1;
+        }
+        .project-card:hover .project-image,
+        .project-card.active .project-image {
+            filter: blur(3px);
+        }
+        .project-title {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+        }
     </style>
 
     <!-- Slide - Revolution Slider Section -->
@@ -271,7 +314,7 @@ Home
         </div>
     </section>
 
-      <!-- Company Profile Section - New Model -->
+    <!-- Company Profile Section - New Model -->
     <section id="company-profile" class="bg-darker-blue py-5">
         <div class="container">
             <!-- Title section -->
@@ -396,7 +439,7 @@ Home
         </div>
     </section>
 
-	   <!-- Services Section -->
+    <!-- Services Section -->
     <section id="services-section" class="bg-darker-blue py-5">
         <div class="container">
             <!-- Title section -->
@@ -609,19 +652,20 @@ Home
                 @foreach($projects as $project)
                     @if($project->isDone == 1)
                         <div class="col-sm-10 col-md-8 col-lg-4 mb-4">
-                            <!-- Block2 - Bootstrap Card -->
-                            <div class="card h-100 border-0 shadow-sm block2" style="background-image: url({{ $project->thumbnail }}); background-size: cover; background-position: center;">
-                                <div class="card-body d-flex flex-column justify-content-end text-white p-4 block2-content trans-04">
-                                    <h4 class="card-title text-uppercase text-white fw-bold mb-2 block2-title trans-04">
+                            <div class="card h-100 border-0 shadow-sm project-card" style="height: 300px;">
+                                <img src="{{ $project->thumbnail }}" class="project-image" alt="{{ $project->name }}">
+                                <div class="project-title text-white text-uppercase fw-bold">
+                                    {{ $project->name }}
+                                </div>
+                                <div class="project-overlay text-white">
+                                    <h4 class="card-title text-uppercase fw-bold mb-2">
                                         {{ $project->name }}
                                     </h4>
-
                                     <p class="card-text text-white-75 mb-3">
                                         {{ $project->brief }}<br><br>
                                         Teknologi yang digunakan:<br>
                                         {{ $project->tech }}
                                     </p>
-
                                     <div class="d-flex flex-wrap">
                                         @if($project->demo != null)
                                             <a href="{{ $project->demo }}" class="btn btn-custom-primary text-uppercase me-2 mb-2">
@@ -642,4 +686,13 @@ Home
             </div>
         </div>
     </section>
+
+    <script>
+        document.querySelectorAll('.project-card').forEach(card => {
+            const title = card.querySelector('.project-title');
+            title.addEventListener('click', () => {
+                card.classList.toggle('active');
+            });
+        });
+    </script>
 @endsection
