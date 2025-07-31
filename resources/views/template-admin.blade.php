@@ -89,6 +89,7 @@
             background-color: var(--bs-darker-blue-bg); /* Darker background on hover/focus */
             color: #fff;
         }
+        .animsition-loading{display:none!important}
     </style>
 
     @yield('css')
