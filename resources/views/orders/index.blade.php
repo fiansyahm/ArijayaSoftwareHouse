@@ -6,6 +6,7 @@
     <table class="table table-bordered mt-5">
         <tr>
             <th>Customer Name</th>
+            <th>Phone Number</th>
             <th>Application Type</th>
             <th>Main Features</th>
             <th>Cost</th>
@@ -15,6 +16,9 @@
         @foreach($orders as $order)
             <tr>
                 <td>{{ $order->customer_name }}</td>
+                <td>
+                    <a href="http://www.livechatarijaya27.site:4000/view/chat/{{ $order->phone }}/all?isreload=1">{{ $order->phone }}</a>
+                </td>
                 <td>{{ $order->application_type }}</td>
                 <td>
                     <textarea rows="5">{{ $order->main_features }}</textarea>

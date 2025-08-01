@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->text('main_features');
             $table->decimal('cost', 10, 2);
             $table->text('notes')->nullable();
+            $table->string('phone')->nullable();
             $table->timestamps();
         });
     }

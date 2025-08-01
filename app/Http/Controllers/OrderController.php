@@ -4,12 +4,58 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Auth;
+use DB;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
+
+    public function sendWA($number,$message){
+        $result = DB::table('whatsapp_chats')->insert([
+            'phone' => $number,
+            'type' => 'outgoing',
+            'media' => 'text',
+            'message' => $message,
+            'status' =>'pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+        return $result;
+     }
+
+     function encryptPhone($phone, $key = "secretkey") {
+        $result = '';
+        $keyLength = strlen($key);
+
+        for ($i = 0; $i < strlen($phone); $i++) {
+            $charCode = ord($phone[$i]) + ord($key[$i % $keyLength]);
+            $result .= chr($charCode);
+        }
+
+        return base64_encode($result);
+    }
+
+    function decryptPhone($encrypted, $key = "secretkey") {
+        $text = base64_decode($encrypted);
+        $result = '';
+        $keyLength = strlen($key);
+
+        for ($i = 0; $i < strlen($text); $i++) {
+            $charCode = ord($text[$i]) - ord($key[$i % $keyLength]);
+            $result .= chr($charCode);
+        }
+
+        return $result;
+    }
+
+
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::all()->map(function ($order) {
+            $order->phone = $this->encryptPhone($order->phone);
+            return $order;
+        });
+
         return view('orders.index', compact('orders'));
     }
 
@@ -20,8 +66,22 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        Order::create($request->all());
-        // return redirect()->route('orders.index')->with('success', 'Order created successfully!');
+        $request->merge([
+            'phone' => '62' . ltrim($request->phone, '0') // hilangkan 0 jika perlu
+        ]);
+        $order = Order::create($request->all());
+
+        $message = "📝 *Detail Order Baru:*\n";
+        $message .= "*Customer:* " . $request->customer_name . "\n";
+        $message .= "*Jenis Aplikasi:* " . $request->application_type . "\n";
+        $message .= "*Fitur Utama:* " . $request->main_features . "\n";
+        
+        // Kalau kolom notes boleh kosong
+        $message .= "*Catatan:* " . ($request->notes ?? '-') . "\n";
+
+        // Kirim ke WhatsApp
+        $this->sendWA($request->phone, $message);
+
         return redirect()->back()->with('success', 'Purchase Order Sukses Dibuat, Silahkan Chat Admin Untuk Konfirmasi!');
     }
 

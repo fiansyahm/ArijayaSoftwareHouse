@@ -15,6 +15,13 @@
             <label for="customer_name" class="form-label">Nama Customer</label>
             <input class="form-control" type="text" name="customer_name" value="{{ old('customer_name', $order->customer_name) }}" required>
         </div>  
+         <div class="mb-3">
+            <label for="phone" class="form-label">Nomor Telepon</label>
+            <div class="input-group">
+                <span class="input-group-text">62</span>
+                <input class="form-control" type="text" name="phone" value="{{ old('phone', $order->phone) }}" required>
+            </div>
+        </div>
         <div class="mb-3">
             <label for="application_type" class="form-label">Tipe Aplikasi</label>
             <select class="form-control" name="application_type" required>
