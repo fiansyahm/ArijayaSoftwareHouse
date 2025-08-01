@@ -673,10 +673,13 @@ Home
                                             </a>
                                         @endif
                                         @if($project->file != null)
-                                            <a href="{{ $project->file }}" class="btn btn-outline-custom-light text-uppercase mb-2">
+                                            <a href="{{ $project->file }}" class="btn btn-success text-uppercase mb-2">
                                                 Download Aplikasi
                                             </a>
                                         @endif
+                                        <a href="/projects/{{ $project->id }}/detail" class="btn btn-outline-custom-light text-uppercase mb-2">
+                                            Detail Aplikasi
+                                        </a>
                                     </div>
                                 </div>
                             </div>

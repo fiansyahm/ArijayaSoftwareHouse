@@ -115,6 +115,7 @@ Route::get('/projects/{id}/kanban', function($id) {
 
     return view('projects.kanban', compact('project', 'features'));
 });
+Route::get('/projects/{id}/detail', [ProjectController::class, 'detail']);
 Route::get('/our-projects', [ProjectController::class, 'ourprojects']);
 
 Route::resource('orders', OrderController::class);

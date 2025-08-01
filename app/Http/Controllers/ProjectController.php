@@ -68,10 +68,17 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $user = Auth::user();
-        if ($user->isAdmin != 1) {
+        if (!($user->isAdmin ==2 || $user->isAdmin == 3)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         return view('projects.show', compact('project'));
+    }
+
+
+    public function detail($id)
+    {
+        $project = Project::findOrFail($id);
+        return view('projects.detail', compact('project'));
     }
 
     public function edit(Project $project)
