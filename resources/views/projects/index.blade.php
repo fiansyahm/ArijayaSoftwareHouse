@@ -31,7 +31,19 @@
                     <td>{{ $project->description }}</td>
                     <td>{{ $project->start_date }}</td>
                     <td>{{ $project->end_date }}</td>
-                    <td class="text-{{ $project->isDone ? 'success' : 'danger' }}">{{ $project->isDone ? 'Selesai' : 'Belum Selesai' }}</td>
+                    <td
+                        @if ($project->isDone == 0)
+                            class="text-danger">Belum Selesai
+                        @elseif ($project->isDone == 1)
+                            class="text-warning">Progres
+                        @elseif($project->isDone == 2)
+                            class="text-success">Selesai
+                        @elseif($project->isDone == 3)
+                            class="text-info">Gagal
+                        @elseif($project->isDone == 4)
+                            class="text-info-emphasis">Selesai(Tidak Aktif)
+                        @endif
+                    </td>
                     @if(Auth::user()->isAdmin=='2')
                     <td>
                         @php

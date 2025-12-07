@@ -139,7 +139,7 @@ Our Project
             <!-- Project cards -->
             <div class="row justify-content-center">
                 @foreach($projects as $project)
-                    @if($project->isDone == 1)
+                    @if($project->isDone == 2)
                         <div class="col-sm-10 col-md-8 col-lg-4 mb-4">
                             <div class="card h-100 border-0 shadow-sm project-card" style="height: 300px;">
                                 <img src="{{ $project->thumbnail }}" class="project-image" alt="{{ $project->name }}">

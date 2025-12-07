@@ -103,7 +103,7 @@ class ProjectController extends Controller
             'tech' => 'nullable|string',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'isDone' => 'required|boolean',
+            'isDone' => 'required',
             'programmers' => 'nullable|array',
             'json' => 'required|array',
             'json.*.id' => 'required|integer',

@@ -50,8 +50,11 @@
         <div class="mb-3">
             <label for="isDone" class="form-label">Status</label>
             <select id="isDone" name="isDone" class="form-control">
-                <option value="0" {{ !$project->isDone ? 'selected' : '' }}>Belum Selesai</option>
-                <option value="1" {{ $project->isDone ? 'selected' : '' }}>Selesai</option>
+                <option value="0" {{ $project->isDone==0 ? 'selected' : '' }}>Belum Selesai</option>
+                <option value="1" {{ $project->isDone==1 ? 'selected' : '' }}>Dalam Progres</option>
+                <option value="2" {{ $project->isDone==2 ? 'selected' : '' }}>Selesai</option>
+                <option value="3" {{ $project->isDone==3 ? 'selected' : '' }}>Gagal</option>
+                <option value="4" {{ $project->isDone==4 ? 'selected' : '' }}>Selesai(Tidak Aktif)</option>
             </select>
         </div>
 
