@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use App\Events\NewMessage;
 use Illuminate\Http\Request;
+use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
     public function index($userId)
     {
+        $projects = Project::whereJsonContains('programmers', (string) $userId) // atau (int) $userId
+            ->get();
         // Ambil pesan antara user login dan user lain
         $messages = Message::where(function ($q) use ($userId) {
             $q->where('from_id', Auth::id())->where('to_id', $userId);
@@ -20,6 +23,10 @@ class ChatController extends Controller
         })
         ->orderBy('id', 'asc')
         ->get();
+
+        if ($projects->isEmpty()) {
+            return redirect()->route('projects.index');
+        }
 
         return view('chat/index', [
             'messages' => $messages,
@@ -49,13 +56,15 @@ class ChatController extends Controller
         ], 201);
     }
 
-    public function fetch($id)
+    public function fetch($userId)
     {
-        $messages = Message::where(function ($q) use ($id) {
-            $q->where('from_id', auth()->id())->where('to_id', $id);
-        })->orWhere(function ($q) use ($id) {
-            $q->where('from_id', $id)->where('to_id', auth()->id());
-        })->orderBy('id', 'asc')->get();
+        $messages = Message::where(function ($q) use ($userId) {
+            $q->where('from_id', Auth::id())
+            ->where('to_id', $userId);
+        })->orWhere(function ($q) use ($userId) {
+            $q->where('from_id', $userId)
+            ->where('to_id', Auth::id());
+        })->orderBy('created_at')->get();
 
         return response()->json($messages);
     }

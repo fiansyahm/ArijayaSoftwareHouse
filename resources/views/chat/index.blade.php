@@ -89,23 +89,31 @@ const dropOverlay = document.getElementById('dropOverlay');
 
 let polling = null;
 
-/* ====== HELPER: CEK BASE64 ====== */
+/* ====== HELPER: CEK BASE64 (lebih ketat) ====== */
 function isBase64(str) {
     if (!str || typeof str !== 'string') return false;
-    const cleaned = str.replace(/^data:.*;base64,/, '');
-    return cleaned.length % 4 === 0 && /^[A-Za-z0-9+/=]+$/.test(cleaned);
+    // Harus punya prefix data:image/...;base64,
+    if (!str.startsWith('data:image/') || !str.includes(';base64,')) return false;
+    const cleaned = str.split(',')[1];
+    if (!cleaned || cleaned.length % 4 !== 0) return false;
+    return /^[A-Za-z0-9+/=]+$/.test(cleaned);
 }
 
-/* ====== HELPER: BASE64 → FILE (untuk preview) ====== */
+/* ====== HELPER: BASE64 → FILE (aman dengan try-catch) ====== */
 function base64ToFile(base64, filename = 'image.jpg') {
-    const arr = base64.split(',');
-    const mimeMatch = arr[0].match(/:(.*?);/);
-    const mime = mimeMatch ? mimeMatch[1] : 'image/jpeg';
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) u8arr[n] = bstr.charCodeAt(n);
-    return new File([u8arr], filename, { type: mime });
+    try {
+        const arr = base64.split(',');
+        const mimeMatch = arr[0].match(/:(.*?);/);
+        const mime = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) u8arr[n] = bstr.charCodeAt(n);
+        return new File([u8arr], filename, { type: mime });
+    } catch (e) {
+        console.warn('Invalid base64 string, skipping preview');
+        return null;
+    }
 }
 
 /* ====== KOMPRES GAMBAR → BASE64 (target <1MB) ====== */
@@ -256,8 +264,8 @@ input.addEventListener('keydown', async (e) => {
         if (!txt) return;
 
         if (isBase64(txt)) {
-            const file = base64ToFile(txt, 'pasted-image.jpg');
-            showPreview(file);
+            const file = base64ToFile(txt);
+            if (file) showPreview(file);
         } else {
             const ok = await sendText(txt);
             if (ok) input.value = '';
@@ -272,8 +280,8 @@ btnSend.addEventListener('click', async () => {
     if (!txt) return;
 
     if (isBase64(txt)) {
-        const file = base64ToFile(txt, 'pasted-image.jpg');
-        showPreview(file);
+        const file = base64ToFile(txt);
+        if (file) showPreview(file);
     } else {
         const ok = await sendText(txt);
         if (ok) input.value = '';
@@ -301,8 +309,8 @@ window.addEventListener('paste', (e) => {
         if (item.kind === 'string') {
             item.getAsString(str => {
                 if (isBase64(str)) {
-                    const file = base64ToFile(str, 'pasted-image.jpg');
-                    showPreview(file);
+                    const file = base64ToFile(str);
+                    if (file) showPreview(file);
                 }
             });
         }
