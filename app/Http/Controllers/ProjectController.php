@@ -68,9 +68,6 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $user = Auth::user();
-        if (!($user->isAdmin ==2 || $user->isAdmin == 3)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
         return view('projects.show', compact('project'));
     }
 
@@ -101,6 +98,9 @@ class ProjectController extends Controller
             'demo' => 'nullable|string',
             'file' => 'nullable|string',
             'tech' => 'nullable|string',
+            'customer_phone' => 'nullable|string',
+            'price' => 'nullable|integer',
+            'fee' => 'nullable|integer',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'isDone' => 'required',
@@ -144,7 +144,10 @@ class ProjectController extends Controller
             'brief' => $request->brief,
             'demo' => $request->demo,
             'file' => $request->file,
-            'tech' => $request->tech
+            'tech' => $request->tech,
+            'customer_phone' => $request->customer_phone?? $project->customer_phone,
+            'price' => $request->price?? $project->price,
+            'fee' => $request->fee?? $project->fee
         ]);
 
         return redirect()->route('projects.index')->with('success', 'Project updated successfully');

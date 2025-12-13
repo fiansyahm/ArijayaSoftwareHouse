@@ -45,6 +45,7 @@ class ChatController extends Controller
             array_diff($programmers, [$myId])
         );
         return view('chat/index', [
+            'project'=>$projects,
             'projectId' => $projectId,
             'messages' => $messages,
             'userId' => $userId,

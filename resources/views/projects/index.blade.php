@@ -59,8 +59,8 @@
                     </td>
                     @endif
                     <td>
-                        @if(Auth::user()->isAdmin=='2'||Auth::user()->isAdmin=='3')
                         <a href="{{ route('projects.show', $project) }}" class="btn btn-info btn-sm">Detail</a>
+                        @if(Auth::user()->isAdmin=='2'||Auth::user()->isAdmin=='3')
                         <a href="{{ route('projects.edit', $project) }}" class="btn btn-warning btn-sm">Edit</a>
                         
                             @if(Auth::user()->isAdmin=='2')

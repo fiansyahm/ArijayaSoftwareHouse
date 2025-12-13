@@ -154,13 +154,21 @@
         <!-- Sidebar: List Programmer -->
         <div id="chatList" class="w-96 bg-gray-100 flex flex-col md:block">
             <header class="bg-[#075E54] text-white px-4 py-4 flex items-center justify-between flex-shrink-0">
-                <h2 class="font-semibold text-lg">Chat Programmer</h2>
+                <h2 class="font-semibold text-lg px-3">Chat Programmer</h2>
+                <h2 class="font-semibold text-xl px-3">{{ $project->name }}</h2>
             </header>
             <div class="flex-1 overflow-y-auto">
                 @foreach ($programmers as $programmer)
+                    @php
+                        $isActive = request()->is("chat/project/$projectId/$programmer");
+                    @endphp
+
                     <a href="/chat/project/{{ $projectId }}/{{ $programmer }}?id={{ $myId }}"
-                       class="chat-list-item block px-4 py-3 flex items-center gap-3 border-b border-gray-200">
+                    class="chat-list-item block px-4 py-3 flex items-center gap-3 border-b border-gray-200
+                    {{ $isActive ? 'bg-green-100 border-l-4 border-green-500' : 'hover:bg-gray-100' }}">
+                    
                         <div class="w-12 h-12 rounded-full bg-gray-300 flex-shrink-0"></div>
+
                         <div class="flex-1">
                             <h3 class="font-semibold">{{ $programmer }}</h3>
                             <p class="text-sm text-gray-600 truncate">Klik untuk membuka chat</p>
@@ -178,7 +186,7 @@
                 <div class="flex items-center gap-3 flex-1">
                     <div class="w-10 h-10 rounded-full bg-gray-300"></div>
                     <div>
-                        <h2 class="font-semibold">{{ $user->name ?? 'Nama Pengguna' }}</h2>
+                        <h2 class="font-semibold">{{ $userId }}</h2>
                         <p class="text-xs opacity-90">Online</p>
                     </div>
                 </div>

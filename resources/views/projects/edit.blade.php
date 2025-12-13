@@ -37,6 +37,21 @@
             <textarea id="description" name="description" class="form-control">{{ $project->description }}</textarea>
         </div>
 
+        @if(Auth::user()->id==1)
+            <div class="mb-3">
+                <label for="price" class="form-label">Nilai Proyek</label>
+                <input id="price" name="price" class="form-control" value="{{ $project->price }}">
+            </div>
+            <div class="mb-3">
+                <label for="fee" class="form-label">Fee Proyek</label>
+                <input id="fee" name="fee" class="form-control" value="{{ $project->fee }}">
+            </div>
+            <div class="mb-3">
+                <label for="customer_phone" class="form-label">Nomor Customer</label>
+                <input id="customer_phone" name="customer_phone" class="form-control" value="{{ $project->customer_phone }}">
+            </div>
+        @endif
+
         <div class="mb-3">
             <label for="start_date" class="form-label">Tanggal Mulai</label>
             <input type="date" id="start_date" name="start_date" class="form-control" value="{{ $project->start_date }}">

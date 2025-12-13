@@ -5,7 +5,8 @@
     <h1>Detail Proyek</h1>
     
     <p><strong>Nama:</strong> {{ $project->name }}</p>
-    <p><strong>Deskripsi:</strong> {{ $project->description }}</p>
+    <p><strong>Teknologi:</strong> {{ $project->tech }}</p>
+    <p><strong>Deskripsi[Developer Only]:</strong> {{ $project->description }}</p>
     <p><strong>Tanggal Mulai:</strong> {{ $project->start_date }}</p>
     <p><strong>Tanggal Selesai:</strong> {{ $project->end_date }}</p>
     <p><strong>Status:</strong> {{ $project->isDone ? 'Selesai' : 'Belum Selesai' }}</p>
