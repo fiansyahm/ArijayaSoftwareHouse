@@ -134,5 +134,6 @@ Route::group(['middleware' => ['auth']], function () {
 Route::middleware('auth')->group(function () {
     Route::get('/chat/project/{projectId}/{userId}', [ChatController::class, 'index']);
     Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
-    Route::get('/chat/fetch/{id}', [ChatController::class, 'fetch'])->name('chat.fetch');
+    Route::get('/chat/fetch/{projectId}/{userId}', [ChatController::class, 'fetch'])
+    ->name('chat.fetch');
 });

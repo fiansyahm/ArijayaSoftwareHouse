@@ -24,6 +24,10 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
+    {{-- gunakan list chat disebelah kiri ,diklik baru muncul chatnya,kemudian ada tombol kembali ke list juga --}}
+    {{-- @foreach ($programmers as $programmer)
+        <a href="/chat/project/{{ $projectId }}/{{ $programmer }}" class="btn btn-primary btn-sm">Chat</a>
+    @endforeach --}}
 
     <!-- Header -->
     <header class="bg-[#075E54] text-white px-4 py-3 flex items-center gap-3 fixed top-0 left-0 right-0 z-40">
@@ -69,11 +73,12 @@
 
 <script>
 /* ================== CONFIG ================== */
-const FETCH_URL = "{{ route('chat.fetch', $userId) }}";
+const FETCH_URL = "{{ route('chat.fetch', ['projectId' => $projectId, 'userId' => $userId]) }}";
 const SEND_URL = "{{ route('chat.send') }}";
 const CSRF = "{{ csrf_token() }}";
 const MY_ID = {{ auth()->id() }};
 const TO_ID = {{ $userId }};
+const PROJECT_ID = {{ $projectId }};
 
 const messagesDiv = document.getElementById('messages');
 const input = document.getElementById('messageInput');
@@ -183,9 +188,11 @@ async function sendImage(base64) {
         },
         body: JSON.stringify({
             message: base64,
-            to_id: TO_ID
+            to_id: TO_ID,
+            project_id: PROJECT_ID
         })
     });
+    console.log(res);
     return res.ok;
 }
 
@@ -200,9 +207,11 @@ async function sendText(text) {
         },
         body: JSON.stringify({
             message: text,
-            to_id: TO_ID
+            to_id: TO_ID,
+            project_id: PROJECT_ID
         })
     });
+    console.log(res);
     return res.ok;
 }
 

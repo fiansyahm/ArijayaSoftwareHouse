@@ -19,8 +19,8 @@ class ChatController extends Controller
             return redirect()->route('projects.index');
         }
         // Ambil pesan antara user login dan user lain
-        $messages = Message::where(function ($q) use ($userId) {
-            $q->where('from_id', Auth::id())->where('to_id', $userId);
+        $messages = Message::where(function ($q) use ( $projectId, $userId) {
+            $q->where('project_id', $projectId)->where('from_id', Auth::id())->where('to_id', $userId);
         })
         ->orWhere(function ($q) use ($userId) {
             $q->where('from_id', $userId)->where('to_id', Auth::id());
@@ -28,9 +28,12 @@ class ChatController extends Controller
         ->orderBy('id', 'asc')
         ->get();
 
-        $programmers = $projects->programmers;
-
+        $programmers = json_decode($projects->programmers);
+        $programmers = array_values(
+            array_diff($programmers, [Auth::user()->id])
+        );
         return view('chat/index', [
+            'projectId' => $projectId,
             'messages' => $messages,
             'userId' => $userId,
             'programmers' => $programmers
@@ -42,12 +45,14 @@ class ChatController extends Controller
         $request->validate([
             'message' => 'required|string',
             'to_id'   => 'required|integer|exists:users,id',
+            'project_id' => 'required|integer|exists:projects,id',
         ]);
 
         $message = Message::create([
             'from_id'   => Auth::id(),
             'to_id'     => $request->to_id,
             'message'   => $request->message, // teks biasa atau base64 gambar
+            'project_id' => $request->project_id
         ]);
 
         // Opsional: broadcast event jika pakai Laravel Echo / Pusher
@@ -59,13 +64,15 @@ class ChatController extends Controller
         ], 201);
     }
 
-    public function fetch($userId)
+    public function fetch($projectId,$userId)
     {
-        $messages = Message::where(function ($q) use ($userId) {
+        $messages = Message::where(function ($q) use ($projectId,$userId) {
             $q->where('from_id', Auth::id())
+            ->where('project_id', $projectId)
             ->where('to_id', $userId);
-        })->orWhere(function ($q) use ($userId) {
+        })->orWhere(function ($q) use ($projectId,$userId) {
             $q->where('from_id', $userId)
+            ->where('project_id', $projectId)
             ->where('to_id', Auth::id());
         })->orderBy('created_at')->get();
 
