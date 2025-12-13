@@ -7,27 +7,129 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color:#efeae2; }
+        html, body { height: 100%; margin: 0; }
+
         .chat-bg {
             background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
             background-repeat: repeat;
             background-size: 100% auto;
         }
-        .bubble { max-width:75%; padding:10px 14px; border-radius:16px; position:relative; box-shadow:0 1px 3px rgba(0,0,0,.12); font-size:15px; line-height:1.4; }
-        .bubble-me { background:#d9fdd3; margin-left:auto; border-bottom-right-radius:4px; }
-        .bubble-me::after{ content:""; position:absolute; right:-6px; bottom:0; width:12px; height:12px; background:#d9fdd3; clip-path:polygon(0 0,100% 100%,0 100%); }
-        .bubble-other{ background:#fff; margin-right:auto; border-bottom-left-radius:4px; }
-        .bubble-other::after{ content:""; position:absolute; left:-6px; bottom:0; width:12px; height:12px; background:#fff; clip-path:polygon(100% 0,100% 100%,0 100%); }
-        .time{ font-size:11px; opacity:.6; margin-top:6px; text-align:right; }
-        #previewBox{ position:fixed; bottom:84px; left:50%; transform:translateX(-50%); z-index:60; background:rgba(255,255,255,.98); padding:8px; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.2); display:none; width:300px; }
-        #dropOverlay{ position:fixed; inset:0; z-index:50; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.35); color:#fff; font-size:20px; }
-        img.preview-img{ max-width:100%; height:auto; border-radius:8px; display:block; margin-bottom:6px; }
+
+        .bubble { 
+            max-width:75%; 
+            padding:10px 14px; 
+            border-radius:16px; 
+            position:relative; 
+            box-shadow:0 1px 3px rgba(0,0,0,.12); 
+            font-size:15px; 
+            line-height:1.4; 
+        }
+        .bubble-me { 
+            background:#d9fdd3; 
+            margin-left:auto; 
+            border-bottom-right-radius:4px; 
+        }
+        .bubble-me::after{ 
+            content:""; 
+            position:absolute; 
+            right:-6px; 
+            bottom:0; 
+            width:12px; 
+            height:12px; 
+            background:#d9fdd3; 
+            clip-path:polygon(0 0,100% 100%,0 100%); 
+        }
+        .bubble-other{ 
+            background:#fff; 
+            margin-right:auto; 
+            border-bottom-left-radius:4px; 
+        }
+        .bubble-other::after{ 
+            content:""; 
+            position:absolute; 
+            left:-6px; 
+            bottom:0; 
+            width:12px; 
+            height:12px; 
+            background:#fff; 
+            clip-path:polygon(100% 0,100% 100%,0 100%); 
+        }
+        .time{ 
+            font-size:11px; 
+            opacity:.6; 
+            margin-top:6px; 
+            text-align:right; 
+        }
+
+        #previewBox{ 
+            position:fixed; 
+            bottom:84px; 
+            left:50%; 
+            transform:translateX(-50%); 
+            z-index:60; 
+            background:rgba(255,255,255,.98); 
+            padding:8px; 
+            border-radius:12px; 
+            box-shadow:0 8px 30px rgba(0,0,0,.2); 
+            display:none; 
+            width:300px; 
+        }
+        #dropOverlay{ 
+            position:fixed; 
+            inset:0; 
+            z-index:50; 
+            display:none; 
+            align-items:center; 
+            justify-content:center; 
+            background:rgba(0,0,0,.35); 
+            color:#fff; 
+            font-size:20px; 
+        }
+        img.preview-img{ 
+            max-width:100%; 
+            height:auto; 
+            border-radius:8px; 
+            display:block; 
+            margin-bottom:6px; 
+        }
         .chat-list-item:hover { background-color: #f0f0f0; }
         .chat-list-item.active { background-color: #e0f7fa; }
+
+        /* Scroll mulus di iOS */
+        #messages {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Mobile Layout */
         @media (max-width: 768px) {
-            #chatList { position: fixed; top:0; left:0; bottom:0; width:100%; z-index:40; transition: transform 0.3s ease; }
-            #chatList.hidden-mobile { transform: translateX(-100%); }
-            #chatRoom { position: fixed; top:0; left:0; right:0; bottom:0; width:100%; display:none; }
-            #chatRoom.active-mobile { display: block; }
+            #chatList {
+                position: fixed;
+                top:0; left:0; bottom:0;
+                width:100%;
+                z-index:40;
+                transition: transform 0.3s ease;
+                background: #fff;
+            }
+            #chatList.hidden-mobile { 
+                transform: translateX(-100%); 
+            }
+
+            #chatRoom {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                z-index: 30;
+                background-color: #efeae2;
+                display: none;
+                flex-direction: column;
+            }
+            #chatRoom.active-mobile {
+                display: flex;
+            }
+
+            /* Padding bawah agar tidak tertutup notch/home indicator */
+            .input-container {
+                padding-bottom: max(16px, env(safe-area-inset-bottom));
+            }
         }
     </style>
 </head>
@@ -48,16 +150,16 @@
         </div>
     </div>
 
-    <div class="flex flex-1 overflow-hidden">
-        <!-- Sidebar: List Programmer (seperti WhatsApp) -->
+    <div class="flex flex-1 overflow-hidden relative">
+        <!-- Sidebar: List Programmer -->
         <div id="chatList" class="w-96 bg-gray-100 flex flex-col md:block">
-            <header class="bg-[#075E54] text-white px-4 py-4 flex items-center justify-between">
+            <header class="bg-[#075E54] text-white px-4 py-4 flex items-center justify-between flex-shrink-0">
                 <h2 class="font-semibold text-lg">Chat Programmer</h2>
             </header>
             <div class="flex-1 overflow-y-auto">
                 @foreach ($programmers as $programmer)
                     <a href="/chat/project/{{ $projectId }}/{{ $programmer }}"
-                       class="chat-list-item block px-4 py-3 flex items-center gap-3 border-b border-gray-200 active">
+                       class="chat-list-item block px-4 py-3 flex items-center gap-3 border-b border-gray-200">
                         <div class="w-12 h-12 rounded-full bg-gray-300 flex-shrink-0"></div>
                         <div class="flex-1">
                             <h3 class="font-semibold">{{ $programmer }}</h3>
@@ -69,9 +171,9 @@
         </div>
 
         <!-- Chat Room -->
-        <div id="chatRoom" class="flex-1 flex flex-col {{ $userId ? '' : 'hidden' }} md:block">
+        <div id="chatRoom" class="flex-1 flex flex-col {{ $userId ? '' : 'hidden' }} md:flex">
             <!-- Header Chat -->
-            <header class="bg-[#075E54] text-white px-4 py-3 flex items-center gap-3 fixed top-0 left-0 right-0 z-40 md:static md:left-auto md:right-auto">
+            <header class="bg-[#075E54] text-white px-4 py-3 flex items-center gap-3 flex-shrink-0">
                 <button id="backButton" class="text-white text-2xl md:hidden">&larr;</button>
                 <div class="flex items-center gap-3 flex-1">
                     <div class="w-10 h-10 rounded-full bg-gray-300"></div>
@@ -82,18 +184,21 @@
                 </div>
             </header>
 
-            <!-- Messages -->
-            <div id="messages" class="flex-1 overflow-y-auto chat-bg pt-20 pb-28 px-4 space-y-4 md:pt-4"></div>
+            <!-- Messages Area -->
+            <div id="messages" class="flex-1 overflow-y-auto chat-bg px-4 py-4 space-y-4 min-h-0"></div>
 
-            <!-- Input -->
-            <div class="fixed bottom-0 left-0 right-0 bg-[#F0F0F0] px-3 py-3 flex items-center gap-2 z-30 md:left-auto md:right-auto md:relative">
+            <!-- Input Bar -->
+            <div class="bg-[#F0F0F0] px-3 py-3 flex items-center gap-2 flex-shrink-0 border-t border-gray-300 input-container">
                 <input id="fileInput" type="file" accept="image/*" class="hidden" />
                 <button id="btnFile" class="bg-gray-300 text-black w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-400 transition">📷</button>
 
-                <input id="messageInput" type="text" placeholder="Ketik pesan..." class="flex-1 px-5 py-3 rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-green-500 text-base" />
+                <input id="messageInput" type="text" placeholder="Ketik pesan..." 
+                       class="flex-1 px-5 py-3 rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-green-500 text-base" />
 
                 <button id="btnSend" class="bg-[#075E54] text-white w-12 h-12 rounded-full flex items-center justify-center hover:bg-[#064c45] transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
                 </button>
             </div>
         </div>
@@ -125,7 +230,7 @@ const chatRoom = document.getElementById('chatRoom');
 
 let polling = null;
 
-/* Mobile navigation */
+/* Mobile back button */
 if (backButton) {
     backButton.addEventListener('click', () => {
         chatList.classList.remove('hidden-mobile');
@@ -245,6 +350,7 @@ function renderMessages(list) {
             const img = document.createElement('img');
             img.src = msg.message;
             img.className = 'rounded-lg max-w-[220px] shadow';
+            img.loading = 'lazy';
             inner.appendChild(img);
         } else {
             const p = document.createElement('p');
@@ -283,8 +389,7 @@ if (TO_ID) {
     polling = setInterval(loadMessages, 2000);
 }
 
-/* ====== EVENT LISTENERS (sama seperti sebelumnya) ====== */
-// ... (kode event untuk kirim teks, gambar, paste, drag drop, preview buttons tetap sama)
+/* ====== EVENT LISTENERS ====== */
 input.addEventListener('keydown', async (e) => {
     if (e.key === 'Enter') {
         e.preventDefault();
@@ -379,11 +484,13 @@ window.addEventListener('beforeunload', () => {
     if (polling) clearInterval(polling);
 });
 
-/* Mobile: Saat load halaman dengan userId, sembunyikan list dan tampilkan room */
-if (window.innerWidth < 768 && TO_ID) {
-    chatList.classList.add('hidden-mobile');
-    chatRoom.classList.add('active-mobile');
-}
+/* Mobile: Otomatis tampilkan chat room saat ada userId */
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.innerWidth < 768 && TO_ID) {
+        chatList.classList.add('hidden-mobile');
+        chatRoom.classList.add('active-mobile');
+    }
+});
 </script>
 </body>
 </html>
