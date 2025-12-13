@@ -158,7 +158,7 @@
             </header>
             <div class="flex-1 overflow-y-auto">
                 @foreach ($programmers as $programmer)
-                    <a href="/chat/project/{{ $projectId }}/{{ $programmer }}"
+                    <a href="/chat/project/{{ $projectId }}/{{ $programmer }}?id={{ $myId }}"
                        class="chat-list-item block px-4 py-3 flex items-center gap-3 border-b border-gray-200">
                         <div class="w-12 h-12 rounded-full bg-gray-300 flex-shrink-0"></div>
                         <div class="flex-1">
@@ -205,11 +205,15 @@
     </div>
 
 <script>
+function getQueryParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+const MY_ID = {{ $myId }};
 /* ================== CONFIG ================== */
-const FETCH_URL = "{{ $userId ? route('chat.fetch', ['projectId' => $projectId, 'userId' => $userId]) : '' }}";
-const SEND_URL = "{{ route('chat.send') }}";
+const FETCH_URL = "{{ $userId ? route('chat.fetch', ['projectId' => $projectId, 'userId' => $userId]) : '' }}"+"?id="+MY_ID;
+const SEND_URL = "{{ route('chat.send') }}"+"?id="+MY_ID;
 const CSRF = "{{ csrf_token() }}";
-const MY_ID = {{ auth()->id() }};
 const TO_ID = {{ $userId ?? 'null' }};
 const PROJECT_ID = {{ $projectId }};
 

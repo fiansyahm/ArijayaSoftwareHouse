@@ -10,8 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    public function index($projectId, $userId)
+    function getMyId(Request $request = null)
     {
+        if ($request && $request->query('id')&&Auth::id()==1) {
+            $myId = $request->query('id');
+            return $myId;
+        }
+        return Auth::id();
+    }
+
+    public function index(Request $request, $projectId, $userId)
+    {
+        $myId = $this->getMyId($request);
+        // $myId = 48;
+
         $projects = Project::where('id', $projectId)
         ->whereJsonContains('programmers', (string) $userId)
         ->first();
@@ -19,29 +31,33 @@ class ChatController extends Controller
             return redirect()->route('projects.index');
         }
         // Ambil pesan antara user login dan user lain
-        $messages = Message::where(function ($q) use ( $projectId, $userId) {
-            $q->where('project_id', $projectId)->where('from_id', Auth::id())->where('to_id', $userId);
+        $messages = Message::where(function ($q) use ( $projectId, $userId, $myId) {
+            $q->where('project_id', $projectId)->where('from_id', $myId)->where('to_id', $userId);
         })
-        ->orWhere(function ($q) use ($userId) {
-            $q->where('from_id', $userId)->where('to_id', Auth::id());
+        ->orWhere(function ($q) use ($userId, $myId) {
+            $q->where('from_id', $userId)->where('to_id', $myId);
         })
         ->orderBy('id', 'asc')
         ->get();
 
         $programmers = json_decode($projects->programmers);
         $programmers = array_values(
-            array_diff($programmers, [Auth::user()->id])
+            array_diff($programmers, [$myId])
         );
         return view('chat/index', [
             'projectId' => $projectId,
             'messages' => $messages,
             'userId' => $userId,
-            'programmers' => $programmers
+            'programmers' => $programmers,
+            'myId' => $myId
         ]);
     }
 
     public function send(Request $request)
     {
+        $myId = $this->getMyId($request);
+        // $myId = 48;
+
         $request->validate([
             'message' => 'required|string',
             'to_id'   => 'required|integer|exists:users,id',
@@ -49,7 +65,7 @@ class ChatController extends Controller
         ]);
 
         $message = Message::create([
-            'from_id'   => Auth::id(),
+            'from_id'   => $myId,
             'to_id'     => $request->to_id,
             'message'   => $request->message, // teks biasa atau base64 gambar
             'project_id' => $request->project_id
@@ -64,16 +80,19 @@ class ChatController extends Controller
         ], 201);
     }
 
-    public function fetch($projectId,$userId)
+    public function fetch(Request $request,$projectId,$userId)
     {
-        $messages = Message::where(function ($q) use ($projectId,$userId) {
-            $q->where('from_id', Auth::id())
+        $myId = $this->getMyId($request);
+        // $myId = 48;
+
+        $messages = Message::where(function ($q) use ($projectId,$userId,$myId) {
+            $q->where('from_id', $myId)
             ->where('project_id', $projectId)
             ->where('to_id', $userId);
-        })->orWhere(function ($q) use ($projectId,$userId) {
+        })->orWhere(function ($q) use ($projectId,$userId,$myId) {
             $q->where('from_id', $userId)
             ->where('project_id', $projectId)
-            ->where('to_id', Auth::id());
+            ->where('to_id', $myId);
         })->orderBy('created_at')->get();
 
         return response()->json($messages);
