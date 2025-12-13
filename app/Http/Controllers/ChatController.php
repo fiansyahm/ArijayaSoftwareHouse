@@ -10,10 +10,14 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    public function index($userId)
+    public function index($projectId, $userId)
     {
-        $projects = Project::whereJsonContains('programmers', (string) $userId) // atau (int) $userId
-            ->get();
+        $projects = Project::where('id', $projectId)
+        ->whereJsonContains('programmers', (string) $userId)
+        ->first();
+        if($projects == null) {
+            return redirect()->route('projects.index');
+        }
         // Ambil pesan antara user login dan user lain
         $messages = Message::where(function ($q) use ($userId) {
             $q->where('from_id', Auth::id())->where('to_id', $userId);
@@ -24,13 +28,12 @@ class ChatController extends Controller
         ->orderBy('id', 'asc')
         ->get();
 
-        if ($projects->isEmpty()) {
-            return redirect()->route('projects.index');
-        }
+        $programmers = $projects->programmers;
 
         return view('chat/index', [
             'messages' => $messages,
-            'userId' => $userId
+            'userId' => $userId,
+            'programmers' => $programmers
         ]);
     }
 

@@ -73,6 +73,18 @@
 
                         @endif
                         <a href="/projects/{{ $project->id }}/kanban" class="btn btn-success btn-sm">Progres</a>
+                        <?php
+                            $programmers = json_decode($project->programmers, true);
+
+                            // buang user login dari array
+                            $programmers = array_values(
+                                array_diff($programmers, [Auth::user()->id])
+                            );
+
+                            // ambil programmer pertama
+                            $programmer_1 = $programmers[0] ?? null;
+                        ?>
+                        <a href="/chat/project/{{ $project->id }}/{{ $programmer_1 }}" class="btn btn-primary btn-sm">Chat</a>
                     </td>
                 </tr>
             @endforeach
