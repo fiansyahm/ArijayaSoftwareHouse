@@ -30,3 +30,10 @@ Route::get(
   '/chat/last-message/{projectId}',
   [ChatController::class, 'lastMessage']
 )->middleware('auth:sanctum');
+
+
+Route::middleware('auth:sanctum')->post(
+    '/update-fcm-token',
+    [AuthController::class, 'updateFcmToken']
+);
+

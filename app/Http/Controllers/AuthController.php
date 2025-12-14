@@ -24,7 +24,7 @@ class AuthController extends Controller {
                 'fcm_token' => $request->fcm_token
             ]);
         }
-        
+
         $token = $user->createToken('flutter')->plainTextToken;
 
         return response()->json([
@@ -32,4 +32,22 @@ class AuthController extends Controller {
             'user' => $user
         ]);
     }
+
+    public function updateFcmToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token' => 'required|string',
+        ]);
+
+        $user = $request->user();
+
+        $user->update([
+            'fcm_token' => $request->fcm_token,
+        ]);
+
+        return response()->json([
+            'message' => 'FCM token updated',
+        ]);
+    }
+
 }
