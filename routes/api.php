@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ChatController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +19,14 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('auth:sanctum')->get('/projects', [ProjectController::class, 'indexApi']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/chat/fetch/{projectId}/{userId}', [ChatController::class, 'fetch']);
+    Route::post('/chat/send', [ChatController::class, 'send']);
+});
+
+Route::get(
+  '/chat/last-message/{projectId}',
+  [ChatController::class, 'lastMessage']
+)->middleware('auth:sanctum');

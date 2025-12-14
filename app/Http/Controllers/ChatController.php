@@ -99,4 +99,28 @@ class ChatController extends Controller
         return response()->json($messages);
     }
 
+    public function lastMessage($projectId)
+    {
+        $myId = auth()->id();
+
+        $messages = Message::where('project_id', $projectId)
+            ->where(function ($q) use ($myId) {
+                $q->where('from_id', $myId)
+                ->orWhere('to_id', $myId);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy(function ($chat) use ($myId) {
+                return $chat->from_id == $myId
+                    ? $chat->to_id
+                    : $chat->from_id;
+            })
+            ->map(function ($group) {
+                return $group->first();
+            });
+
+        return response()->json($messages->values());
+    }
+
+
 }

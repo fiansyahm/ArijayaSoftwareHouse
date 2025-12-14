@@ -184,4 +184,22 @@ class ProjectController extends Controller
         return view('projects.ourprojects', compact('projects'));
     }
 
+    public function indexApi()
+    {
+        $user = Auth::user();
+
+        if ($user->isAdmin == 2 || $user->isAdmin == 3) {
+            $projects = Project::all();
+        } elseif ($user->isAdmin == 1) {
+            $projects = Project::whereJsonContains(
+                'programmers',
+                (string) $user->id
+            )->get();
+        } else {
+            $projects = [];
+        }
+
+        return response()->json($projects);
+    }
+
 }
