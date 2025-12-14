@@ -17,6 +17,14 @@ class AuthController extends Controller {
         }
 
         $user = Auth::user();
+        
+        // 🔥 SIMPAN FCM TOKEN
+        if ($request->fcm_token) {
+            $user->update([
+                'fcm_token' => $request->fcm_token
+            ]);
+        }
+        
         $token = $user->createToken('flutter')->plainTextToken;
 
         return response()->json([

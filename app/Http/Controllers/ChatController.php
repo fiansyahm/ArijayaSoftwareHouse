@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
+use App\Models\User;
 use App\Events\NewMessage;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use App\Services\FCMService;
 
 class ChatController extends Controller
 {
@@ -71,6 +73,22 @@ class ChatController extends Controller
             'message'   => $request->message, // teks biasa atau base64 gambar
             'project_id' => $request->project_id
         ]);
+
+
+        $toUser = User::find($request->to_id);
+
+        if ($toUser && $toUser->fcm_token) {
+            FCMService::send(
+                $toUser->fcm_token,
+                'Pesan Baru',
+                $request->message,
+                [
+                    'type'       => 'chat',
+                    'project_id' => $request->project_id,
+                    'from_id'    => Auth::id(),
+                ]
+            );
+        }
 
         // Opsional: broadcast event jika pakai Laravel Echo / Pusher
         // broadcast(new MessageSent($message))->toOthers();
