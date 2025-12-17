@@ -22,8 +22,8 @@ class CreateProjectsTable extends Migration
             $table->text('file')->nullable();
             $table->text('tech')->nullable();
             $table->text('description')->nullable();
-            $table->integer('price')->nullable();
-            $table->integer('fee')->nullable();
+            $table->text('price')->nullable();
+            $table->text('fee')->nullable();
             $table->text('customer_phone')->nullable();
             $table->longText('json')->collation('utf8mb4_bin')->nullable();
             $table->date('start_date')->nullable();
