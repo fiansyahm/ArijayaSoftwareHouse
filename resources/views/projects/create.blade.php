@@ -41,7 +41,8 @@
                             id="user_{{ $user->id }}" 
                             name="programmers[]" 
                             value="{{ $user->id }}"
-                            @if($user->name == "Project Manager") checked @endif
+                            @if($user->name == "Project Manager") checked
+                            @elseif($user->id == Auth::user()->id) checked @endif
                         >
                         <label class="form-check-label" for="user_{{ $user->id }}">{{ $user->name }}</label>
                     </div>
